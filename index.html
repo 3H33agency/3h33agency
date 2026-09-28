@@ -3,8 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>3H33 Agency — Management & Booking DJ à Angers | Musique Électronique</title>
-<meta name="description" content="Agence de management et booking artistique à Angers. Accompagnement DJs, conseil programmation bars/clubs, organisation d'événements nightlife. Créateurs de N8LIFE.">
+<title>3H33 Agency — Booking DJ &amp; management artistique à Angers</title>
+<meta name="description" content="Agence de management et booking de DJs à Angers. Accompagnement artistique, programmation de bars et clubs, événements électro. À l'origine de N8LIFE, en bêta.">
+<link rel="canonical" href="https://www.3h33agency.fr/">
+<meta name="theme-color" content="#000000">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="3H33 Agency">
+<meta property="og:title" content="3H33 Agency — Booking DJ &amp; management artistique à Angers">
+<meta property="og:description" content="Agence de management et booking de DJs à Angers. Accompagnement artistique, programmation de bars et clubs, événements électro. À l'origine de N8LIFE, en bêta.">
+<meta property="og:url" content="https://www.3h33agency.fr/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="3H33 Agency — Booking DJ &amp; management artistique à Angers">
+<meta name="twitter:description" content="Agence de management et booking de DJs à Angers. Accompagnement artistique, programmation de bars et clubs, événements électro. À l'origine de N8LIFE, en bêta.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "3H33 Agency",
+  "url": "https://www.3h33agency.fr/",
+  "description": "Agence de management et booking de DJs à Angers. Accompagnement artistique, programmation de bars et clubs, événements électro. À l'origine de N8LIFE, en bêta.",
+  "email": "contact@n8life.fr",
+  "sameAs": [
+    "https://instagram.com/3h33agency"
+  ]
+}
+</script>
 <style>
   :root{
     --bg-r:0; --bg-g:0; --bg-b:0;
@@ -30,7 +54,15 @@
     overflow-x:hidden;
   }
   a{color:inherit;text-decoration:none;}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--fg);outline-offset:4px;}
   .wrap{max-width:1100px;margin:0 auto;padding:0 32px;}
+
+  .skip-link{
+    position:fixed;z-index:100;top:12px;left:12px;
+    padding:12px 16px;background:var(--fg);color:var(--bg);
+    transform:translateY(-160%);
+  }
+  .skip-link:focus{transform:translateY(0);}
 
   header{
     position:sticky;top:0;z-index:50;
@@ -298,11 +330,39 @@
   .contact-item a:hover{color:var(--dim);transform:translateX(2px);}
 
   footer{
-    padding:40px 0;
-    display:flex;justify-content:space-between;align-items:center;
-    font-size:11px;letter-spacing:1.5px;color:var(--dim);text-transform:uppercase;
+    padding:48px 0 24px;
+    color:var(--dim);
   }
-  @media (max-width:600px){footer{flex-direction:column;gap:14px;text-align:center;}}
+  .footer-main{
+    display:grid;grid-template-columns:1fr 1fr 1fr;gap:36px;
+    padding-bottom:40px;
+  }
+  .footer-logo{
+    display:inline-block;color:var(--fg);font-size:20px;font-weight:700;letter-spacing:4px;
+  }
+  .footer-description{max-width:260px;margin:12px 0 0;font-size:13px;line-height:1.6;}
+  .footer-heading{
+    display:block;margin-bottom:16px;color:var(--fg);
+    font-size:10px;font-weight:600;letter-spacing:1.8px;text-transform:uppercase;
+  }
+  .footer-links,.footer-connect{display:flex;flex-direction:column;align-items:flex-start;gap:12px;}
+  .footer-links a,.footer-connect a{font-size:13px;line-height:1.5;transition:color .15s ease;}
+  .footer-links a:hover,.footer-connect a:hover{color:var(--fg);}
+  .footer-bottom{
+    display:flex;justify-content:space-between;gap:20px;
+    padding-top:20px;border-top:1px solid var(--line);
+    font-size:10px;letter-spacing:1px;text-transform:uppercase;
+  }
+  .footer-bottom a:hover{color:var(--fg);}
+  @media (max-width:720px){
+    .footer-main{grid-template-columns:1fr 1fr;gap:32px 24px;}
+    .footer-identity{grid-column:1/-1;}
+  }
+  @media (max-width:480px){
+    .footer-main{grid-template-columns:1fr;gap:28px;}
+    .footer-identity{grid-column:auto;}
+    .footer-bottom{align-items:flex-start;flex-direction:column;gap:12px;}
+  }
 
   /* ARTISTES — sticky, scroll-driven editorial roster */
   .artists-section{
@@ -412,10 +472,11 @@
 </head>
 <body>
 
-<header>
-  <nav class="wrap">
-    <div class="logo">3H33</div>
-    <button class="navtoggle" id="navToggle" aria-label="Menu">☰</button>
+<a class="skip-link" href="#main-content">Aller au contenu</a>
+<header id="top">
+  <nav class="wrap" aria-label="Navigation principale">
+    <a class="logo" href="#top" aria-label="3H33 Agency, accueil">3H33</a>
+    <button class="navtoggle" id="navToggle" type="button" aria-label="Ouvrir le menu" aria-controls="navLinks" aria-expanded="false">☰</button>
     <div class="navlinks" id="navLinks">
       <a href="#about">Agence</a>
       <a href="#services">Services</a>
@@ -426,6 +487,7 @@
   </nav>
 </header>
 
+<main id="main-content">
 <section class="hero wrap">
   <div class="eyebrow hero-anim" style="--d:0">3H33 Agency</div>
   <h1 class="hero-anim" style="--d:100">Management &amp; booking DJ<br/>à Angers.<br/>L'agence qui fait vivre<br/>la nuit électronique.</h1>
@@ -560,27 +622,55 @@
       </div>
       <div class="contact-item reveal" style="--d:240">
         <div class="k">Instagram</div>
-        <div class="v"><a href="https://instagram.com/3h33agency" target="_blank" rel="noopener">@3h33agency</a></div>
+        <div class="v"><a href="https://instagram.com/3h33agency" target="_blank" rel="noopener noreferrer" aria-label="Instagram de 3H33, ouvre un nouvel onglet">@3h33agency</a></div>
       </div>
     </div>
   </div>
 </section>
+</main>
 
-<footer class="wrap">
-  <div>3H33 Agency — Angers</div>
-  <div id="year"></div>
+<footer class="wrap" aria-label="Pied de page">
+  <div class="footer-main">
+    <div class="footer-identity">
+      <a class="footer-logo" href="#top" aria-label="3H33 Agency, retour en haut">3H33</a>
+      <p class="footer-description">Agency — Management &amp; booking DJ à Angers.</p>
+    </div>
+    <nav class="footer-links" aria-label="Navigation de pied de page">
+      <span class="footer-heading">Explorer</span>
+      <a href="#about">L'agence</a>
+      <a href="#services">Services</a>
+      <a href="#roster">Artistes</a>
+      <a href="#n8life">N8LIFE</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="footer-connect">
+      <span class="footer-heading">Contact &amp; réseaux</span>
+      <a href="mailto:contact@n8life.fr">contact@n8life.fr</a>
+      <a href="https://instagram.com/3h33agency" target="_blank" rel="noopener noreferrer" aria-label="Instagram de 3H33, ouvre un nouvel onglet">Instagram — @3h33agency</a>
+      <a href="https://n8life.fr" target="_blank" rel="noopener noreferrer">N8LIFE — rejoindre la bêta</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© <span id="year"></span> 3H33 Agency</span>
+    <a href="#top">Retour en haut</a>
+  </div>
 </footer>
 
 <script>
   document.getElementById('navToggle').addEventListener('click', function(){
-    document.getElementById('navLinks').classList.toggle('open');
+    var navLinks = document.getElementById('navLinks');
+    var isOpen = navLinks.classList.toggle('open');
+    document.getElementById('navToggle').setAttribute('aria-expanded', String(isOpen));
+    document.getElementById('navToggle').setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
   });
   document.querySelectorAll('.navlinks a').forEach(function(a){
     a.addEventListener('click', function(){
       document.getElementById('navLinks').classList.remove('open');
+      document.getElementById('navToggle').setAttribute('aria-expanded', 'false');
+      document.getElementById('navToggle').setAttribute('aria-label', 'Ouvrir le menu');
     });
   });
-  document.getElementById('year').textContent = '© ' + new Date().getFullYear();
+  document.getElementById('year').textContent = new Date().getFullYear();
 
   document.querySelectorAll('[data-contact-type]').forEach(function(link){
     link.addEventListener('click', function(){
