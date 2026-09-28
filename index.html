@@ -261,6 +261,10 @@
     color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:0;
     font:inherit;font-size:15px;
   }
+  .contact-honeypot{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
   .form-field textarea{min-height:150px;resize:vertical;line-height:1.55;}
   .form-field input:focus,.form-field select:focus,.form-field textarea:focus{
     outline:2px solid var(--dim);outline-offset:2px;
@@ -268,6 +272,7 @@
   .contact-form .btn-primary{justify-self:start;cursor:pointer;font-family:inherit;}
   .form-note,.form-status{grid-column:1/-1;margin:0;font-size:12px;line-height:1.6;color:var(--dim);}
   .form-status{min-height:1.6em;color:var(--off);}
+  .contact-form [hidden]{display:none;}
   .contact-details{display:flex;flex-direction:column;gap:28px;}
   .contact-details .contact-item{padding-top:16px;}
   .roster-cta{
@@ -532,12 +537,21 @@
         </select>
       </div>
       <div class="form-field form-field-full">
+        <label for="contactEmail">E-mail pour vous répondre</label>
+        <input id="contactEmail" name="email" type="email" autocomplete="email" maxlength="254" required>
+      </div>
+      <div class="form-field form-field-full">
         <label for="contactMessage">Message</label>
         <textarea id="contactMessage" name="message" rows="6" required></textarea>
       </div>
-      <p class="form-note">Le bouton prépare un e-mail dans votre application de messagerie. Aucune donnée n’est enregistrée sur ce site.</p>
-      <button class="btn-primary" type="submit">Préparer le message</button>
+      <div class="form-field form-field-full">
+        <label class="contact-honeypot" for="contactWebsite" aria-hidden="true">Site web</label>
+        <input class="contact-honeypot" id="contactWebsite" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+      </div>
+      <p class="form-note">Votre demande est transmise à 3H33 par e-mail afin que l’équipe puisse vous répondre.</p>
+      <button class="btn-primary" id="contactSubmit" type="submit">Envoyer la demande</button>
       <p class="form-status" id="contactStatus" role="status" aria-live="polite"></p>
+      <a class="btn-secondary" id="contactFallback" href="#" hidden>Ouvrir votre messagerie à la place</a>
     </form>
     <div class="contact-details">
       <div class="contact-item reveal" style="--d:160">
@@ -582,19 +596,50 @@
       if(!contactForm.reportValidity()) return;
 
       var formData = new FormData(contactForm);
-      var subject = 'Demande 3H33 — ' + formData.get('type');
-      var body = [
-        'Nom : ' + formData.get('name'),
-        'Type de demande : ' + formData.get('type'),
+      var payload = {
+        name: formData.get('name'),
+        type: formData.get('type'),
+        email: formData.get('email'),
+        message: formData.get('message'),
+        website: formData.get('website')
+      };
+      var submitButton = document.getElementById('contactSubmit');
+      var status = document.getElementById('contactStatus');
+      var fallback = document.getElementById('contactFallback');
+      var mailSubject = 'Demande 3H33 — ' + payload.type;
+      var mailBody = [
+        'Nom : ' + payload.name,
+        'E-mail : ' + payload.email,
+        'Type de demande : ' + payload.type,
         '',
         'Message :',
-        formData.get('message')
+        payload.message
       ].join('\n');
-      var mailto = 'mailto:contact@n8life.fr?subject=' + encodeURIComponent(subject) +
-        '&body=' + encodeURIComponent(body);
-      document.getElementById('contactStatus').textContent =
-        'Votre application de messagerie va s’ouvrir avec votre demande préremplie.';
-      window.location.href = mailto;
+
+      fallback.hidden = true;
+      fallback.href = 'mailto:contact@n8life.fr?subject=' + encodeURIComponent(mailSubject) +
+        '&body=' + encodeURIComponent(mailBody);
+      submitButton.disabled = true;
+      status.textContent = 'Envoi de votre demande…';
+
+      fetch('/api/contact', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(payload)
+      }).then(function(response){
+        return response.json().then(function(result){
+          if(!response.ok) throw new Error(result.error || 'L’envoi a échoué.');
+          return result;
+        });
+      }).then(function(){
+        contactForm.reset();
+        status.textContent = 'Votre demande a bien été envoyée. Merci, l’équipe 3H33 vous répondra dès que possible.';
+      }).catch(function(){
+        status.textContent = 'L’envoi direct est indisponible pour le moment. Vous pouvez préparer votre demande par e-mail.';
+        fallback.hidden = false;
+      }).then(function(){
+        submitButton.disabled = false;
+      });
     });
   }
 
