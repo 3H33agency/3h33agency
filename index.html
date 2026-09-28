@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3H33 Agency — Management & Booking DJ à Angers | Musique Électronique</title>
+<meta name="description" content="Agence de management et booking artistique à Angers. Accompagnement DJs, conseil programmation bars/clubs, organisation d'événements nightlife. Créateurs de N8LIFE.">
+<style>
+  :root{
+    --bg-r:0; --bg-g:0; --bg-b:0;
+    --fg-r:255; --fg-g:255; --fg-b:255;
+    --off-r:230; --off-g:230; --off-b:230;
+    --dim-r:138; --dim-g:138; --dim-b:138;
+    --line-r:31; --line-g:31; --line-b:31;
+    --panel-r:10; --panel-g:10; --panel-b:10;
+    --bg: rgb(var(--bg-r) var(--bg-g) var(--bg-b));
+    --fg: rgb(var(--fg-r) var(--fg-g) var(--fg-b));
+    --off: rgb(var(--off-r) var(--off-g) var(--off-b));
+    --dim: rgb(var(--dim-r) var(--dim-g) var(--dim-b));
+    --line: rgb(var(--line-r) var(--line-g) var(--line-b));
+    --panel: rgb(var(--panel-r) var(--panel-g) var(--panel-b));
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg);
+    color:var(--fg);
+    font-family:'Helvetica Neue', Arial, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 32px;}
+
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(var(--bg-r), var(--bg-g), var(--bg-b), 0.85);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  nav.wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    height:76px;
+  }
+  .logo{font-size:20px;font-weight:700;letter-spacing:4px;}
+  .navlinks{display:flex;gap:36px;}
+  .navlinks a{
+    font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);
+    transition:color .2s ease;
+  }
+  .navlinks a:hover{color:var(--fg);}
+  .navtoggle{display:none;background:none;border:none;color:var(--fg);font-size:22px;cursor:pointer;}
+
+  @media (max-width:720px){
+    .navlinks{
+      position:absolute;top:76px;left:0;right:0;
+      background:var(--bg);flex-direction:column;gap:0;
+      max-height:0;overflow:hidden;
+      transition:max-height .3s ease;
+      padding:0 32px;
+    }
+    .navlinks.open{max-height:400px;padding:24px 32px;}
+    .navlinks a{
+      padding:18px 0;border-bottom:1px solid var(--line);font-size:13px;
+    }
+    .navtoggle{display:block;}
+  }
+
+  .hero{
+    min-height:92vh;display:flex;flex-direction:column;justify-content:center;
+    position:relative;border-bottom:1px solid var(--line);
+  }
+  .hero .eyebrow{
+    font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--dim);
+    margin-bottom:28px;
+  }
+  .hero h1{
+    font-size:clamp(38px,7vw,86px);
+    line-height:1.02;
+    font-weight:700;
+    letter-spacing:-1px;
+    margin:0 0 28px 0;
+    max-width:920px;
+  }
+  .hero p.sub{
+    font-size:clamp(15px,2vw,19px);
+    color:var(--off);
+    max-width:560px;
+    line-height:1.6;
+    font-weight:300;
+  }
+  @media (max-width:720px){
+    .hero{
+      min-height:auto;
+      padding:56px 0 48px;
+    }
+  }
+
+
+  .reveal{
+    opacity:0;transform:translateY(20px);
+    transition:opacity .5s cubic-bezier(0.16,1,0.3,1), transform .5s cubic-bezier(0.16,1,0.3,1);
+    transition-delay:calc(var(--d,0) * 1ms);
+  }
+  .reveal.in-view{opacity:1;transform:translateY(0);}
+  @media (prefers-reduced-motion: reduce){
+    .reveal{opacity:1;transform:none;transition:none;}
+  }
+
+  @keyframes heroIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  .hero-anim{
+    opacity:0;
+    animation:heroIn .7s cubic-bezier(0.16,1,0.3,1) forwards;
+    animation-delay:calc(var(--d,0) * 1ms);
+  }
+  @media (prefers-reduced-motion: reduce){
+    .hero-anim{opacity:1;animation:none;}
+  }
+
+  section{
+    padding:120px 0;
+    border-bottom:1px solid var(--line);
+  }
+  section:last-of-type{border-bottom:none;}
+  @media (max-width:720px){
+    section{padding:56px 0;}
+  }
+  .kicker{
+    font-size:11px;letter-spacing:4px;text-transform:uppercase;color:var(--dim);
+    margin-bottom:20px;
+  }
+  h2{
+    font-size:clamp(28px,4vw,46px);
+    font-weight:700;
+    letter-spacing:-0.5px;
+    margin:0 0 40px 0;
+    max-width:760px;
+  }
+  .lead{
+    font-size:18px;line-height:1.8;color:var(--off);font-weight:300;
+    max-width:720px;
+  }
+  .lead + .lead{margin-top:22px;}
+
+  .about-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:60px;
+  }
+  @media (max-width:800px){.about-grid{grid-template-columns:1fr;}}
+  .about-stats{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line);}
+  .stat{
+    display:flex;justify-content:space-between;align-items:baseline;
+    padding:22px 0;border-bottom:1px solid var(--line);
+  }
+  .stat .num{font-size:34px;font-weight:700;}
+  .stat .label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);text-align:right;}
+
+  .services-list{border-top:1px solid var(--line);}
+  .service-row{
+    display:grid;grid-template-columns:60px 1fr 1fr;gap:24px;
+    padding:38px 0;border-bottom:1px solid var(--line);
+    align-items:start;
+    transition:transform .25s cubic-bezier(0.16,1,0.3,1);
+  }
+  .service-row:hover{transform:translateY(-2px);}
+  .service-row:hover p{color:var(--off);}
+  .service-row .idx{font-size:13px;color:var(--dim);font-weight:400;}
+  .service-row h3{font-size:24px;margin:0;font-weight:700;letter-spacing:-0.3px;}
+  .service-row p{font-size:15px;color:var(--dim);line-height:1.7;margin:0;font-weight:300;}
+  @media (max-width:720px){
+    .service-row{grid-template-columns:1fr;gap:10px;}
+  }
+
+  .lineup{border-top:1px solid var(--line);}
+  .lineup-item{
+    display:flex;align-items:center;justify-content:space-between;
+    gap:24px;padding:26px 0;border-bottom:1px solid var(--line);
+    cursor:pointer;position:relative;
+  }
+  .lineup-item .lineup-name{
+    font-size:clamp(30px,5.4vw,58px);
+    font-weight:800;letter-spacing:-1px;line-height:1;
+    transition:opacity .3s ease, color .3s ease;
+  }
+  .lineup-item.has-photo:hover .lineup-name,
+  .lineup-item.has-photo.touch-active .lineup-name{color:var(--dim);}
+  .lineup-item .lineup-style{
+    font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);
+    white-space:nowrap;flex-shrink:0;
+  }
+  .lineup-thumb{
+    display:none;
+  }
+  @media (max-width:640px){
+    .lineup-item{flex-wrap:wrap;padding:20px 0;}
+    .lineup-item .lineup-name{font-size:clamp(24px,8vw,36px);}
+    .lineup-item.has-photo{gap:16px;}
+    .lineup-thumb{
+      display:block;width:52px;height:52px;border-radius:50%;
+      overflow:hidden;flex-shrink:0;background-size:cover;background-position:center;
+      order:-1;
+    }
+  }
+  .lineup-preview{
+    position:fixed;top:0;left:0;
+    width:220px;height:280px;border-radius:14px;overflow:hidden;
+    pointer-events:none;z-index:80;
+    opacity:0;transform:translate(-50%,-50%) scale(0.92);
+    transition:opacity .25s cubic-bezier(0.34,1.56,0.64,1), transform .25s cubic-bezier(0.34,1.56,0.64,1);
+    box-shadow:0 30px 70px rgba(0,0,0,0.45);
+    background-size:cover;background-position:center;background-color:var(--panel);
+  }
+  .lineup-preview.active{opacity:1;transform:translate(-50%,-50%) scale(1);}
+  @media (max-width:640px){.lineup-preview{display:none;}}
+
+  .n8life-box{
+    border:1px solid var(--line);padding:60px 50px;
+    display:flex;flex-direction:column;gap:24px;align-items:flex-start;
+  }
+  @media (max-width:600px){.n8life-box{padding:40px 26px;}}
+  .n8life-box .n8-title{font-size:clamp(30px,5vw,52px);font-weight:700;letter-spacing:2px;}
+  .btn{
+    display:inline-block;border:1px solid var(--fg);padding:14px 30px;
+    font-size:11px;letter-spacing:2px;text-transform:uppercase;
+    transition:background .2s ease,color .2s ease;
+  }
+  .btn:hover{background:var(--fg);color:var(--bg);transform:scale(1.02);}
+  .btn{transition:background .2s ease,color .2s ease,transform .2s cubic-bezier(0.16,1,0.3,1);}
+
+  .contact-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:40px;
+  }
+  @media (max-width:720px){.contact-grid{grid-template-columns:1fr;}}
+  .contact-item{border-top:1px solid var(--line);padding-top:20px;}
+  .contact-item .k{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:10px;}
+  .contact-item .v{font-size:22px;font-weight:400;}
+  .contact-item a{transition:color .15s ease, transform .15s ease; display:inline-block;}
+  .contact-item a:hover{color:var(--dim);transform:translateX(2px);}
+
+  footer{
+    padding:40px 0;
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:11px;letter-spacing:1.5px;color:var(--dim);text-transform:uppercase;
+  }
+  @media (max-width:600px){footer{flex-direction:column;gap:14px;text-align:center;}}
+
+  /* ARTISTES — scroll-driven editorial reveal */
+  .artists-section{
+    position:relative;
+    border-bottom:1px solid var(--line);
+  }
+  .artists-sticky{
+    position:sticky;top:0;
+    height:100vh;
+    display:flex;flex-direction:column;
+    overflow:hidden;
+  }
+  .artists-kicker-wrap{
+    max-width:1100px;margin:0 auto;width:100%;
+    padding:48px 32px 0;flex-shrink:0;
+  }
+  .artists-stage{
+    flex:1;position:relative;
+    display:flex;align-items:center;justify-content:center;
+    overflow:hidden;
+  }
+  .artists-names{
+    position:relative;will-change:transform;
+    text-align:center;
+  }
+  .artist-name-row{
+    padding:12px 0;
+    display:flex;align-items:center;justify-content:center;
+    will-change:transform,opacity;
+    transition:opacity .1s linear;
+  }
+  .artist-name-row .an-text{
+    display:inline-block;
+    font-size:clamp(34px,7.5vw,104px);
+    font-weight:400;
+    letter-spacing:-1px;
+    color:var(--fg);
+    line-height:1;
+    transition:font-weight .3s ease;
+    white-space:nowrap;
+  }
+  .artist-name-row.is-active .an-text{font-weight:800;}
+  .artists-visual{
+    position:absolute;top:50%;right:6%;
+    width:min(300px,34vw);height:min(380px,44vw);
+    pointer-events:none;
+  }
+  .artist-visual-img{
+    position:absolute;inset:0;
+    background-size:cover;background-position:center;
+    background-color:var(--panel);
+    opacity:0;
+    transform:translateY(-50%) scale(0.92) rotate(-1.5deg);
+    transition:opacity .6s cubic-bezier(0.16,1,0.3,1), transform .6s cubic-bezier(0.16,1,0.3,1);
+    box-shadow:0 40px 100px rgba(0,0,0,0.5);
+  }
+  .artist-visual-img.is-active{
+    opacity:1;
+    transform:translateY(-50%) scale(1) rotate(0deg);
+  }
+  .artists-category{
+    position:absolute;left:50%;bottom:8%;
+    transform:translateX(-50%);
+    font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--dim);
+    opacity:0;transition:opacity .4s ease;
+    white-space:nowrap;
+  }
+  .artists-category.visible{opacity:1;}
+  @media (prefers-reduced-motion: reduce){
+    .artists-names{transform:none !important;}
+    .artist-name-row{opacity:1 !important;transform:none !important;}
+    .artist-visual-img{transition:none;}
+  }
+  @media (max-width:720px){
+    .artists-visual{
+      top:auto;bottom:6%;right:50%;
+      transform:translateX(50%);
+      width:min(220px,58vw);height:min(280px,72vw);
+      opacity:0.9;
+    }
+    .artist-visual-img{transform:scale(0.92) rotate(-1.5deg);}
+    .artist-visual-img.is-active{transform:scale(1) rotate(0deg);}
+    .artists-category{bottom:3%;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="wrap">
+    <div class="logo">3H33</div>
+    <button class="navtoggle" id="navToggle" aria-label="Menu">☰</button>
+    <div class="navlinks" id="navLinks">
+      <a href="#about">Agence</a>
+      <a href="#services">Services</a>
+      <a href="#roster">Artistes</a>
+      <a href="#n8life">N8LIFE</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero wrap">
+  <div class="eyebrow hero-anim" style="--d:0">3H33 Agency</div>
+  <h1 class="hero-anim" style="--d:100">Management &amp; booking DJ<br/>à Angers.<br/>L'agence qui fait vivre<br/>la nuit électronique.</h1>
+  <p class="sub hero-anim" style="--d:200">3H33 est une agence de management et booking artistique basée à Angers, spécialisée en musique électronique. Nous accompagnons des DJs et artistes, conseillons bars et clubs sur leur programmation, et organisons des événements nightlife dans toute la région.</p>
+</section>
+
+<section id="about" class="wrap">
+  <div class="kicker">À propos</div>
+  <h2 class="reveal">Une agence de l'ombre, un impact réel.</h2>
+  <div class="about-grid">
+    <div>
+      <p class="lead reveal" style="--d:80">Basée à Angers, 3H33 est une agence de management et booking artistique spécialisée dans l'accompagnement de DJs et artistes de musique électronique. Notre approche : construire des carrières sur la durée plutôt que gérer des dates au coup par coup — stratégie artistique, développement d'image, booking cohérent.</p>
+      <p class="lead reveal" style="--d:160">Nous travaillons également avec les bars et clubs de la région qui cherchent à structurer leur programmation musicale et à fidéliser leur public grâce à une sélection d'artistes pensée comme un vrai parti pris.</p>
+      <p class="lead reveal" style="--d:240">3H33 organise aussi ses propres événements nightlife à Angers et dans les environs, et a lancé <strong>N8LIFE</strong>, le premier réseau social entièrement dédié à la vie nocturne — actuellement en phase beta.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat reveal" style="--d:0"><span class="num">05</span><span class="label">Artistes accompagnés</span></div>
+      <div class="stat reveal" style="--d:100"><span class="num">04</span><span class="label">Pôles d'activité</span></div>
+      <div class="stat reveal" style="--d:200"><span class="num">01</span><span class="label">Plateforme — N8LIFE</span></div>
+      <div class="stat reveal" style="--d:300"><span class="num">Angers</span><span class="label">Basée à</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="services" class="wrap">
+  <div class="kicker">Services</div>
+  <h2 class="reveal">Ce que fait 3H33.</h2>
+  <div class="services-list">
+    <div class="service-row reveal" style="--d:0">
+      <div class="idx">01</div>
+      <h3>Management artistique</h3>
+      <p>Accompagnement de carrière pour DJs et artistes électro : stratégie, image, développement long terme.</p>
+    </div>
+    <div class="service-row reveal" style="--d:90">
+      <div class="idx">02</div>
+      <h3>Booking</h3>
+      <p>Placement d'artistes sur des dates cohérentes avec leur identité, à Angers et au-delà.</p>
+    </div>
+    <div class="service-row reveal" style="--d:180">
+      <div class="idx">03</div>
+      <h3>Conseil en programmation</h3>
+      <p>Accompagnement des bars et clubs sur leur ligne artistique et leur sélection de DJs.</p>
+    </div>
+    <div class="service-row reveal" style="--d:270">
+      <div class="idx">04</div>
+      <h3>Organisation d'événements</h3>
+      <p>Conception et production d'événements nightlife, de A à Z.</p>
+    </div>
+  </div>
+</section>
+
+<section id="roster" class="artists-section" data-count="6">
+  <div class="artists-sticky">
+    <div class="artists-kicker-wrap">
+      <div class="kicker">Artistes</div>
+      <h2 class="reveal" style="margin-bottom:0;">ARTISTES</h2>
+    </div>
+    <div class="artists-stage">
+      <div class="artists-names" id="artistsNames">
+      <div class="artist-name-row" data-i="0" data-style="Afro Généraliste"><span class="an-text">ADR</span></div>
+      <div class="artist-name-row" data-i="1" data-style="Uptempo"><span class="an-text">KAZE</span></div>
+      <div class="artist-name-row" data-i="2" data-style="Dark Techno"><span class="an-text">NOXIA</span></div>
+      <div class="artist-name-row" data-i="3" data-style="Hard Techno"><span class="an-text">CARNAGE</span></div>
+      <div class="artist-name-row" data-i="4" data-style="Généraliste"><span class="an-text">SKRIOUT</span></div>
+      <div class="artist-name-row" data-i="5" data-style="Techno"><span class="an-text">TEK'S</span></div>
+      </div>
+      <div class="artists-visual">
+      <div class="artist-visual-img" data-i="0" style="background-image:url('images/adr.jpg')"></div>
+      <div class="artist-visual-img" data-i="1" style="background-image:url('images/kaze.jpg')"></div>
+      <div class="artist-visual-img" data-i="3" style="background-image:url('images/carnage.jpg')"></div>
+      <div class="artist-visual-img" data-i="4" style="background-image:url('images/skriout.jpg')"></div>
+        <div class="artists-category" id="artistsCategory"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="n8life" class="wrap">
+  <div class="kicker">Projet</div>
+  <h2>N8LIFE.</h2>
+  <div class="n8life-box reveal">
+    <div class="n8-title">Le réseau social de la nuit.</div>
+    <p class="lead">3H33 est à l'origine de N8LIFE, le réseau social pensé pour la nightlife : découverte de soirées, suivi d'artistes, mise en relation entre clubbers, DJs et établissements. Actuellement en phase beta.</p>
+    <a href="https://n8life.fr" class="btn" target="_blank" rel="noopener">Rejoindre la beta</a>
+  </div>
+</section>
+
+<section id="contact" class="wrap">
+  <div class="kicker">Contact</div>
+  <h2 class="reveal">On parle à qui ?</h2>
+  <p class="lead reveal" style="margin-bottom:48px;--d:80">Vous êtes artiste et cherchez un management sérieux ? Vous gérez un bar ou un club et voulez structurer votre programmation ? Vous organisez un événement électro à Angers ou en région ? Écrivez-nous — on répond vite.</p>
+  <div class="contact-grid">
+    <div class="contact-item reveal" style="--d:160">
+      <div class="k">Email</div>
+      <div class="v"><a href="mailto:contact@n8life.fr">contact@n8life.fr</a></div>
+    </div>
+    <div class="contact-item reveal" style="--d:240">
+      <div class="k">Instagram</div>
+      <div class="v"><a href="https://instagram.com/3h33agency" target="_blank" rel="noopener">@3h33agency</a></div>
+    </div>
+  </div>
+</section>
+
+<footer class="wrap">
+  <div>3H33 Agency — Angers</div>
+  <div id="year"></div>
+</footer>
+
+<script>
+  document.getElementById('navToggle').addEventListener('click', function(){
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+  document.querySelectorAll('.navlinks a').forEach(function(a){
+    a.addEventListener('click', function(){
+      document.getElementById('navLinks').classList.remove('open');
+    });
+  });
+  document.getElementById('year').textContent = '© ' + new Date().getFullYear();
+
+  // Scroll reveal: fade + slide-up on elements with .reveal, triggered once.
+  (function(){
+    var items = document.querySelectorAll('.reveal');
+    if(!items.length) return;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+      items.forEach(function(el){ el.classList.add('in-view'); });
+      return;
+    }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){
+        if(entry.isIntersecting){
+          entry.target.classList.add('in-view');
+          io.unobserve(entry.target);
+        }
+      });
+    }, {threshold:0.2, rootMargin:'0px 0px -40px 0px'});
+    items.forEach(function(el){ io.observe(el); });
+  })();
+
+  // ARTISTES — scroll-driven editorial reveal (Shotgun-inspired), data-driven.
+  (function(){
+    var section = document.getElementById('roster');
+    var namesWrap = document.getElementById('artistsNames');
+    if(!section || !namesWrap) return;
+
+    var rows = Array.prototype.slice.call(namesWrap.querySelectorAll('.artist-name-row'));
+    var images = Array.prototype.slice.call(document.querySelectorAll('.artist-visual-img'));
+    var categoryEl = document.getElementById('artistsCategory');
+    var N = rows.length;
+    if(!N) return;
+
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Size the scroll runway: one generous viewport-fraction per artist.
+    function sizeSection(){
+      var perArtist = window.innerWidth <= 720 ? 70 : 85;
+      section.style.height = (N * perArtist) + 'vh';
+    }
+
+    function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+
+    var rowH = rows[0].offsetHeight;
+    var ticking = false;
+
+    function update(){
+      ticking = false;
+      var rect = section.getBoundingClientRect();
+      var scrollable = rect.height - window.innerHeight;
+      var progress = scrollable > 0 ? clamp(-rect.top / scrollable, 0, 1) : 0;
+      var activeFloat = progress * (N - 1);
+      var activeIndex = Math.round(activeFloat);
+
+      var stageH = namesWrap.parentElement.offsetHeight;
+      var offset = (stageH / 2 - rowH / 2) - activeFloat * rowH;
+      namesWrap.style.transform = 'translateY(' + offset + 'px)';
+
+      rows.forEach(function(row, i){
+        var d = Math.abs(i - activeFloat);
+        var scale = Math.max(1 - d * 0.14, 0.55);
+        var opacity = Math.max(1 - d * 0.35, 0.16);
+        row.style.transform = 'scale(' + scale + ')';
+        row.style.opacity = opacity;
+        row.classList.toggle('is-active', i === activeIndex && d < 0.5);
+      });
+
+      images.forEach(function(img){
+        img.classList.toggle('is-active', parseInt(img.getAttribute('data-i'), 10) === activeIndex);
+      });
+
+      if(categoryEl){
+        var activeRow = rows[activeIndex];
+        var styleLabel = activeRow ? activeRow.getAttribute('data-style') : '';
+        if(categoryEl.textContent !== styleLabel){
+          categoryEl.textContent = styleLabel || '';
+        }
+        categoryEl.classList.toggle('visible', !!styleLabel);
+      }
+    }
+
+    function onScroll(){
+      if(!ticking){ requestAnimationFrame(update); ticking = true; }
+    }
+
+    if(reduce){
+      sizeSection();
+      rows[0].classList.add('is-active');
+      var firstImg = images.filter(function(img){ return parseInt(img.getAttribute('data-i'),10) === 0; })[0];
+      if(firstImg) firstImg.classList.add('is-active');
+      if(categoryEl){ categoryEl.textContent = rows[0].getAttribute('data-style') || ''; categoryEl.classList.add('visible'); }
+    } else {
+      sizeSection();
+      rowH = rows[0].offsetHeight;
+      window.addEventListener('scroll', onScroll, {passive:true});
+      window.addEventListener('resize', function(){
+        sizeSection();
+        rowH = rows[0].offsetHeight;
+        update();
+      });
+      update();
+    }
+  })();
+
+  // Shotgun-style lineup: floating photo preview that follows the cursor.
+  (function(){
+    var lineup = document.getElementById('lineup');
+    var preview = document.getElementById('lineupPreview');
+    if(!lineup || !preview) return;
+    var isTouch = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+    var activeItem = null;
+
+    function show(item, x, y){
+      var img = item.getAttribute('data-img');
+      if(!img) return;
+      preview.style.backgroundImage = "url('" + img + "')";
+      preview.style.left = x + 'px';
+      preview.style.top = y + 'px';
+      preview.classList.add('active');
+    }
+    function hide(){
+      preview.classList.remove('active');
+    }
+
+    if(!isTouch){
+      lineup.querySelectorAll('.lineup-item.has-photo').forEach(function(item){
+        item.addEventListener('mouseenter', function(e){ show(item, e.clientX, e.clientY); });
+        item.addEventListener('mousemove', function(e){ show(item, e.clientX, e.clientY); });
+        item.addEventListener('mouseleave', hide);
+      });
+    } else {
+      lineup.querySelectorAll('.lineup-item.has-photo').forEach(function(item){
+        item.addEventListener('click', function(){
+          if(activeItem === item){
+            item.classList.remove('touch-active');
+            activeItem = null;
+          } else {
+            if(activeItem) activeItem.classList.remove('touch-active');
+            item.classList.add('touch-active');
+            activeItem = item;
+          }
+        });
+      });
+    }
+  })();
+
+  // Scroll-driven colour morph: hero (dark) -> about (light) -> services (dark),
+  // inspired by Shotgun's section colour transitions.
+  (function(){
+    var lightSection = document.getElementById('about');
+    if(!lightSection) return;
+
+    var DARK  = {bg:[0,0,0],     fg:[255,255,255], off:[230,230,230], dim:[138,138,138], line:[31,31,31],  panel:[10,10,10]};
+    var LIGHT = {bg:[255,255,255], fg:[0,0,0],      off:[26,26,26],   dim:[107,107,107], line:[226,226,226], panel:[245,245,245]};
+    var TRANSITION_RANGE = 320; // px of scroll over which the colour blends
+    var root = document.documentElement;
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var ticking = false;
+
+    function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
+    function lerp(a, b, t){ return Math.round(a + (b - a) * t); }
+
+    function apply(t){
+      ['bg','fg','off','dim','line','panel'].forEach(function(key){
+        var d = DARK[key], l = LIGHT[key];
+        root.style.setProperty('--' + key + '-r', lerp(d[0], l[0], t));
+        root.style.setProperty('--' + key + '-g', lerp(d[1], l[1], t));
+        root.style.setProperty('--' + key + '-b', lerp(d[2], l[2], t));
+      });
+    }
+
+    function update(){
+      ticking = false;
+      var threshold = window.innerHeight * 0.35;
+      var rect = lightSection.getBoundingClientRect();
+      var enter = clamp((threshold - rect.top) / TRANSITION_RANGE, 0, 1);
+      var exit = clamp((threshold - rect.bottom) / TRANSITION_RANGE, 0, 1);
+      var t = clamp(enter - exit, 0, 1);
+      apply(t);
+    }
+
+    if(reduceMotion){
+      apply(0);
+    } else {
+      update();
+      window.addEventListener('scroll', function(){
+        if(!ticking){
+          requestAnimationFrame(update);
+          ticking = true;
+        }
+      }, {passive:true});
+      window.addEventListener('resize', update);
+    }
+  })();
+</script>
+</body>
+</html>
