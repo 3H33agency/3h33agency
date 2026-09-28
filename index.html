@@ -243,88 +243,109 @@
   }
   @media (max-width:600px){footer{flex-direction:column;gap:14px;text-align:center;}}
 
-  /* ARTISTES — scroll-driven editorial reveal */
+  /* ARTISTES — sticky, scroll-driven editorial roster */
   .artists-section{
+    --artists-bg:#f4f2ed;
+    --artists-fg:#11110f;
     position:relative;
-    border-bottom:1px solid var(--line);
+    padding:0;
+    color:var(--artists-fg);
+    background:var(--artists-bg);
+    border-bottom:1px solid #dedbd4;
+    isolation:isolate;
   }
   .artists-sticky{
     position:sticky;top:0;
-    height:100vh;
-    display:flex;flex-direction:column;
+    height:100vh;height:100svh;
     overflow:hidden;
   }
   .artists-kicker-wrap{
-    max-width:1100px;margin:0 auto;width:100%;
-    padding:48px 32px 0;flex-shrink:0;
+    position:absolute;z-index:2;top:clamp(28px,6vh,64px);left:50%;
+    width:min(1100px,100%);padding:0 32px;
+    transform:translateX(-50%);
+    pointer-events:none;
+  }
+  .artists-kicker-wrap .kicker{color:#77746e;margin-bottom:12px;}
+  .artists-kicker-wrap h2{
+    margin:0;font-size:clamp(12px,1.1vw,15px);font-weight:600;
+    letter-spacing:.12em;color:var(--artists-fg);
   }
   .artists-stage{
-    flex:1;position:relative;
+    position:absolute;inset:0;
     display:flex;align-items:center;justify-content:center;
     overflow:hidden;
   }
   .artists-names{
-    position:relative;will-change:transform;
-    text-align:center;
+    position:absolute;top:50%;left:50%;
+    width:min(1120px,100%);padding:0 4vw;
+    transform:translate(-50%,-50%) translateY(var(--list-offset,0px));
+    text-align:center;will-change:transform;
+    transition:transform .38s cubic-bezier(.22,1,.36,1);
   }
   .artist-name-row{
-    padding:12px 0;
     display:flex;align-items:center;justify-content:center;
+    min-height:clamp(64px,11vw,132px);
+    padding:clamp(6px,1.2vw,14px) 0;
+    transform-origin:center;
     will-change:transform,opacity;
-    transition:opacity .1s linear;
+    transition:transform .38s cubic-bezier(.22,1,.36,1),opacity .38s cubic-bezier(.22,1,.36,1);
   }
   .artist-name-row .an-text{
     display:inline-block;
-    font-size:clamp(34px,7.5vw,104px);
-    font-weight:400;
-    letter-spacing:-1px;
-    color:var(--fg);
-    line-height:1;
-    transition:font-weight .3s ease;
+    font-family:Impact,'Arial Narrow','Helvetica Neue',Arial,sans-serif;
+    font-size:clamp(46px,9.1vw,132px);
+    font-weight:500;
+    letter-spacing:-.055em;
+    color:var(--artists-fg);
+    line-height:.86;
     white-space:nowrap;
+    text-transform:uppercase;
+    transition:font-weight .25s ease;
   }
-  .artist-name-row.is-active .an-text{font-weight:800;}
+  .artist-name-row.is-active .an-text{font-weight:900;}
   .artists-visual{
-    position:absolute;top:50%;right:6%;
-    width:min(300px,34vw);height:min(380px,44vw);
+    position:absolute;z-index:1;top:50%;right:max(7vw,calc((100vw - 1440px)/2 + 8vw));
+    width:clamp(190px,23vw,340px);height:auto;aspect-ratio:1;
+    transform:translateY(-50%);
     pointer-events:none;
   }
   .artist-visual-img{
     position:absolute;inset:0;
     background-size:cover;background-position:center;
-    background-color:var(--panel);
+    background-color:#c6c1b6;border-radius:18px;
     opacity:0;
-    transform:translateY(-50%) scale(0.92) rotate(-1.5deg);
-    transition:opacity .6s cubic-bezier(0.16,1,0.3,1), transform .6s cubic-bezier(0.16,1,0.3,1);
-    box-shadow:0 40px 100px rgba(0,0,0,0.5);
-  }
-  .artist-visual-img.is-active{
-    opacity:1;
-    transform:translateY(-50%) scale(1) rotate(0deg);
+    transform:translate(24px,12px) scale(.94) rotate(2deg);
+    box-shadow:0 28px 70px rgba(25,22,16,.18);
+    will-change:transform,opacity;
   }
   .artists-category{
-    position:absolute;left:50%;bottom:8%;
+    position:absolute;z-index:2;top:calc(50% + clamp(34px,6vw,78px));left:50%;
     transform:translateX(-50%);
-    font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--dim);
-    opacity:0;transition:opacity .4s ease;
-    white-space:nowrap;
+    color:#77746e;
+    font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+    opacity:0;white-space:nowrap;transition:opacity .3s ease;
   }
   .artists-category.visible{opacity:1;}
-  @media (prefers-reduced-motion: reduce){
-    .artists-names{transform:none !important;}
+  @media (prefers-reduced-motion:reduce){
+    .artists-names{transform:translate(-50%,-50%) !important;}
     .artist-name-row{opacity:1 !important;transform:none !important;}
-    .artist-visual-img{transition:none;}
+    .artists-visual,.artists-category{display:none;}
   }
   @media (max-width:720px){
-    .artists-visual{
-      top:auto;bottom:6%;right:50%;
-      transform:translateX(50%);
-      width:min(220px,58vw);height:min(280px,72vw);
-      opacity:0.9;
+    .artists-kicker-wrap{top:32px;padding:0 22px;}
+    .artists-names{top:50%;padding:0 12px;}
+    .artist-name-row{min-height:clamp(56px,13vw,88px);}
+    .artist-name-row .an-text{
+      font-size:clamp(42px,12.5vw,82px);
+      letter-spacing:-.06em;
     }
-    .artist-visual-img{transform:scale(0.92) rotate(-1.5deg);}
-    .artist-visual-img.is-active{transform:scale(1) rotate(0deg);}
-    .artists-category{bottom:3%;}
+    .artists-visual{
+      top:auto;bottom:8%;right:50%;
+      width:min(34vw,164px);height:auto;aspect-ratio:1;
+      transform:translateX(50%);
+    }
+    .artist-visual-img{border-radius:14px;}
+    .artists-category{top:calc(50% + 36px);font-size:9px;}
   }
 </style>
 </head>
@@ -395,7 +416,7 @@
   </div>
 </section>
 
-<section id="roster" class="artists-section" data-count="6">
+<section id="roster" class="artists-section" aria-label="Artistes 3H33">
   <div class="artists-sticky">
     <div class="artists-kicker-wrap">
       <div class="kicker">Artistes</div>
@@ -403,20 +424,9 @@
     </div>
     <div class="artists-stage">
       <div class="artists-names" id="artistsNames">
-      <div class="artist-name-row" data-i="0" data-style="Afro Généraliste"><span class="an-text">ADR</span></div>
-      <div class="artist-name-row" data-i="1" data-style="Uptempo"><span class="an-text">KAZE</span></div>
-      <div class="artist-name-row" data-i="2" data-style="Dark Techno"><span class="an-text">NOXIA</span></div>
-      <div class="artist-name-row" data-i="3" data-style="Hard Techno"><span class="an-text">CARNAGE</span></div>
-      <div class="artist-name-row" data-i="4" data-style="Généraliste"><span class="an-text">SKRIOUT</span></div>
-      <div class="artist-name-row" data-i="5" data-style="Techno"><span class="an-text">TEK'S</span></div>
       </div>
-      <div class="artists-visual">
-      <div class="artist-visual-img" data-i="0" style="background-image:url('adr.jpg')"></div>
-      <div class="artist-visual-img" data-i="1" style="background-image:url('kaze.jpg')"></div>
-      <div class="artist-visual-img" data-i="3" style="background-image:url('carnage.jpg')"></div>
-      <div class="artist-visual-img" data-i="4" style="background-image:url('skriout.jpg')"></div>
-        <div class="artists-category" id="artistsCategory"></div>
-      </div>
+      <div class="artists-visual" id="artistsVisual" aria-hidden="true"></div>
+      <div class="artists-category" id="artistsCategory" aria-live="polite"></div>
     </div>
   </div>
 </section>
@@ -482,30 +492,74 @@
     items.forEach(function(el){ io.observe(el); });
   })();
 
-  // ARTISTES — scroll-driven editorial reveal (Shotgun-inspired), data-driven.
+  // ARTISTES — pin natif et progression entierement pilotee par le scroll.
   (function(){
     var section = document.getElementById('roster');
     var namesWrap = document.getElementById('artistsNames');
     if(!section || !namesWrap) return;
 
+    var artists = [
+      {name:'ADR', image:'artists/adr.jpg', category:'Afro Généraliste'},
+      {name:'KAZE', image:'artists/kaze.jpg', category:'Uptempo'},
+      {name:'NØXIA', image:'artists/noxia-placeholder.jpg', category:'Dark Techno'},
+      {name:'CARNAGE', image:'artists/carnage.jpg', category:'Hard Techno'},
+      {name:'SKRIOUT', image:'artists/skriout.jpg', category:'Généraliste'},
+      {name:"TEK'S", image:'artists/teks-placeholder.jpg', category:'Techno'}
+    ];
+    var visualWrap = document.getElementById('artistsVisual');
+    var namesFragment = document.createDocumentFragment();
+    var visualsFragment = document.createDocumentFragment();
+
+    artists.forEach(function(artist, index){
+      var row = document.createElement('div');
+      row.className = 'artist-name-row';
+      row.setAttribute('data-i', index);
+      var text = document.createElement('span');
+      text.className = 'an-text';
+      text.textContent = artist.name;
+      row.appendChild(text);
+      namesFragment.appendChild(row);
+
+      if(artist.image){
+        var visual = document.createElement('div');
+        visual.className = 'artist-visual-img';
+        visual.setAttribute('data-i', index);
+        visual.setAttribute('role', 'img');
+        visual.setAttribute('aria-label', 'Portrait de ' + artist.name);
+        visual.style.backgroundImage = 'url("' + artist.image + '")';
+        visualsFragment.appendChild(visual);
+      }
+    });
+    namesWrap.appendChild(namesFragment);
+    if(visualWrap) visualWrap.appendChild(visualsFragment);
+
     var rows = Array.prototype.slice.call(namesWrap.querySelectorAll('.artist-name-row'));
-    var images = Array.prototype.slice.call(document.querySelectorAll('.artist-visual-img'));
+    var images = Array.prototype.slice.call(section.querySelectorAll('.artist-visual-img'));
     var categoryEl = document.getElementById('artistsCategory');
-    var N = rows.length;
+    var N = artists.length;
     if(!N) return;
 
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var rowCenters = [];
+    var namesHalfHeight = 0;
+    var ticking = false;
+    var stage = section.querySelector('.artists-stage');
+    var sticky = section.querySelector('.artists-sticky');
+    if(categoryEl && stage && categoryEl.parentElement !== stage){
+      stage.appendChild(categoryEl);
+    }
 
-    // Size the scroll runway: one generous viewport-fraction per artist.
+    // Le sticky reste epingle pendant environ 86vh entre chaque focus.
     function sizeSection(){
-      var perArtist = window.innerWidth <= 720 ? 70 : 85;
-      section.style.height = (N * perArtist) + 'vh';
+      var perArtist = window.innerWidth <= 720 ? 72 : 86;
+      section.style.height = (100 + Math.max(0, N - 1) * perArtist) + 'vh';
+      rowCenters = rows.map(function(row){
+        return row.offsetTop + row.offsetHeight / 2;
+      });
+      namesHalfHeight = namesWrap.offsetHeight / 2;
     }
 
     function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
-
-    var rowH = rows[0].offsetHeight;
-    var ticking = false;
 
     function update(){
       ticking = false;
@@ -515,29 +569,34 @@
       var activeFloat = progress * (N - 1);
       var activeIndex = Math.round(activeFloat);
 
-      var stageH = namesWrap.parentElement.offsetHeight;
-      var offset = (stageH / 2 - rowH / 2) - activeFloat * rowH;
-      namesWrap.style.transform = 'translateY(' + offset + 'px)';
+      var center = rowCenters[activeIndex] || 0;
+      namesWrap.style.setProperty('--list-offset', (namesHalfHeight - center) + 'px');
 
       rows.forEach(function(row, i){
-        var d = Math.abs(i - activeFloat);
-        var scale = Math.max(1 - d * 0.14, 0.55);
-        var opacity = Math.max(1 - d * 0.35, 0.16);
+        var d = Math.abs(i - activeIndex);
+        var scale = Math.max(1 - d * 0.2, 0.52);
+        var opacity = Math.max(1 - d * 0.38, 0.12);
         row.style.transform = 'scale(' + scale + ')';
         row.style.opacity = opacity;
-        row.classList.toggle('is-active', i === activeIndex && d < 0.5);
+        row.classList.toggle('is-active', i === activeIndex);
       });
 
       images.forEach(function(img){
-        img.classList.toggle('is-active', parseInt(img.getAttribute('data-i'), 10) === activeIndex);
+        var distance = Math.abs(parseInt(img.getAttribute('data-i'), 10) - activeFloat);
+        var reveal = clamp(1 - distance, 0, 1);
+        reveal = reveal * reveal * (3 - 2 * reveal);
+        img.style.opacity = reveal;
+        img.style.transform = 'translate(' + (24 * (1 - reveal)) + 'px,' +
+          (12 * (1 - reveal)) + 'px) scale(' + (0.94 + 0.06 * reveal) + ') rotate(' +
+          (2 * (1 - reveal)) + 'deg)';
       });
 
       if(categoryEl){
-        var activeRow = rows[activeIndex];
-        var styleLabel = activeRow ? activeRow.getAttribute('data-style') : '';
+        var styleLabel = artists[activeIndex].category;
         if(categoryEl.textContent !== styleLabel){
           categoryEl.textContent = styleLabel || '';
         }
+        categoryEl.style.opacity = styleLabel ? 1 : 0;
         categoryEl.classList.toggle('visible', !!styleLabel);
       }
     }
@@ -546,21 +605,30 @@
       if(!ticking){ requestAnimationFrame(update); ticking = true; }
     }
 
+    sizeSection();
     if(reduce){
-      sizeSection();
-      rows[0].classList.add('is-active');
-      var firstImg = images.filter(function(img){ return parseInt(img.getAttribute('data-i'),10) === 0; })[0];
-      if(firstImg) firstImg.classList.add('is-active');
-      if(categoryEl){ categoryEl.textContent = rows[0].getAttribute('data-style') || ''; categoryEl.classList.add('visible'); }
+      section.style.height = 'auto';
+      sticky.style.position = 'relative';
+      sticky.style.height = 'auto';
+      sticky.style.overflow = 'visible';
+      stage.style.position = 'relative';
+      stage.style.minHeight = 'auto';
+      stage.style.padding = '140px 0 56px';
+      namesWrap.style.position = 'relative';
+      namesWrap.style.top = 'auto';
+      namesWrap.style.left = 'auto';
+      namesWrap.style.transform = 'none';
+      rows.forEach(function(row){ row.style.opacity = 1; row.style.transform = 'none'; });
     } else {
-      sizeSection();
-      rowH = rows[0].offsetHeight;
       window.addEventListener('scroll', onScroll, {passive:true});
       window.addEventListener('resize', function(){
         sizeSection();
-        rowH = rows[0].offsetHeight;
         update();
       });
+      window.addEventListener('load', function(){ sizeSection(); update(); });
+      if(document.fonts && document.fonts.ready){
+        document.fonts.ready.then(function(){ sizeSection(); update(); });
+      }
       update();
     }
   })();
