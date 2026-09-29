@@ -149,10 +149,14 @@
       position:absolute;top:76px;left:0;right:0;
       background:var(--bg);flex-direction:column;gap:0;
       max-height:0;overflow:hidden;
-      transition:max-height .3s ease;
+      visibility:hidden;
+      transition:max-height .3s ease,visibility 0s linear .3s;
       padding:0 32px;
     }
-    .navlinks.open{max-height:400px;padding:24px 32px;}
+    .navlinks.open{
+      max-height:400px;padding:24px 32px;visibility:visible;
+      transition:max-height .3s ease,visibility 0s;
+    }
     .navlinks a{
       padding:18px 0;border-bottom:1px solid var(--line);font-size:13px;
     }
@@ -190,7 +194,8 @@
     font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;
     transition:transform .2s cubic-bezier(.16,1,.3,1),background .2s ease,color .2s ease;
   }
-  .btn-primary:hover{transform:translateY(-2px);background:transparent;color:var(--fg);}
+  .btn-primary:hover,.btn-primary:focus-visible{transform:translateY(-2px);background:transparent;color:var(--fg);}
+  .btn-primary:active{transform:translateY(0);}
   .btn-secondary{
     display:inline-flex;align-items:center;justify-content:center;
     min-height:52px;padding:0 18px;
@@ -198,7 +203,8 @@
     font-size:11px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;
     transition:border-color .2s ease,color .2s ease;
   }
-  .btn-secondary:hover{border-color:var(--fg);color:var(--off);}
+  .btn-secondary:hover,.btn-secondary:focus-visible{border-color:var(--fg);color:var(--off);transform:translateY(-1px);}
+  .btn-secondary:active{transform:translateY(0);}
   @media (max-width:720px){
     .hero{
       min-height:auto;
@@ -208,13 +214,42 @@
 
 
   .reveal{
+    opacity:1;transform:none;transition:none;
+  }
+  html.reveal-ready .reveal{
     opacity:0;transform:translateY(20px);
     transition:opacity .5s cubic-bezier(0.16,1,0.3,1), transform .5s cubic-bezier(0.16,1,0.3,1);
     transition-delay:calc(var(--d,0) * 1ms);
   }
-  .reveal.in-view{opacity:1;transform:translateY(0);}
+  html.reveal-ready .reveal.in-view{opacity:1;transform:translateY(0);}
   @media (prefers-reduced-motion: reduce){
-    .reveal{opacity:1;transform:none;transition:none;}
+    .reveal,html.reveal-ready .reveal{opacity:1;transform:none;transition:none;}
+  }
+
+  .motion-reveal{--motion-delay:0ms;}
+  html.motion-ready .motion-reveal{
+    opacity:0;transform:translateY(18px);
+    transition:opacity .55s cubic-bezier(.16,1,.3,1),transform .55s cubic-bezier(.16,1,.3,1);
+    transition-delay:var(--motion-delay);
+  }
+  html.motion-ready .motion-reveal.motion-in-view{opacity:1;transform:none;}
+  .artist-card-portrait{overflow:hidden;clip-path:inset(0 0 14% 0);transition:clip-path .7s cubic-bezier(.16,1,.3,1);}
+  .artist-card-portrait img{
+    display:block;width:100%;height:100%;aspect-ratio:4/3;object-fit:cover;
+    transform:scale(1.045);transition:transform .8s cubic-bezier(.16,1,.3,1);
+  }
+  html.motion-ready .artist-card.motion-in-view .artist-card-portrait{clip-path:inset(0);}
+  html.motion-ready .artist-card.motion-in-view .artist-card-portrait img{transform:scale(1);}
+  .placeholder-tile.motion-reveal,.testimonial-placeholder.motion-reveal,.event-placeholder.motion-reveal{
+    transition-property:opacity,transform,clip-path;
+  }
+  .artist-card-open:hover,.artist-card-open:focus-visible{background:#11110f;color:#f4f2ed;transform:translateY(-1px);}
+  .artist-card-open:active{transform:translateY(0);}
+  @media (prefers-reduced-motion:reduce){
+    .motion-reveal,html.motion-ready .motion-reveal{opacity:1;transform:none;transition:none;}
+    .artist-card-portrait,html.motion-ready .artist-card-portrait{clip-path:none;transition:none;}
+    .artist-card-portrait img,html.motion-ready .artist-card-portrait img{transform:none;transition:none;}
+    .btn-primary,.btn-secondary,.artist-card-open{transition:none;}
   }
 
   @keyframes heroIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -424,6 +459,114 @@
     .footer-identity{grid-column:auto;}
     .footer-bottom{align-items:flex-start;flex-direction:column;gap:12px;}
   }
+
+  /* Artist profiles */
+  .artists-section{
+    max-width:none;color:#11110f;background:#f4f2ed;border-bottom:1px solid #dedbd4;
+  }
+  .artists-section .kicker{color:#77746e;}
+  .artists-grid{
+    display:grid;grid-template-columns:1fr;gap:20px;
+  }
+  .artist-card{
+    display:flex;min-width:0;flex-direction:column;
+    border:1px solid #dedbd4;background:#f8f7f3;
+  }
+  .artist-card-portrait{
+    display:block;width:100%;aspect-ratio:4/3;object-fit:cover;
+    background:#dedbd4;
+  }
+  .artist-card-content{
+    display:flex;flex:1;flex-direction:column;align-items:flex-start;
+    gap:16px;padding:22px;
+  }
+  .artist-card-title{margin:0;font-size:26px;letter-spacing:-.5px;}
+  .artist-card-style{
+    margin:0;color:#57554f;font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  }
+  .artist-card-bio{margin:0;color:#57554f;font-size:14px;line-height:1.6;}
+  .artist-card-links{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none;}
+  .artist-card-links li{font-size:11px;line-height:1.5;}
+  .artist-card-links a{color:#11110f;text-decoration:underline;text-underline-offset:3px;}
+  .artist-card-links .is-placeholder{color:#77746e;}
+  .artist-card-actions{display:flex;flex-wrap:wrap;gap:10px;width:100%;margin-top:auto;}
+  .artist-card-actions .btn-primary,.artist-card-actions .btn-secondary{
+    min-height:46px;padding:0 14px;font-size:10px;
+  }
+  .artist-card-open{
+    display:inline-flex;align-items:center;justify-content:center;
+    min-height:46px;padding:0 14px;border:1px solid #11110f;
+    color:#11110f;background:transparent;font:inherit;font-size:10px;
+    font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+  }
+  .artist-card-open:hover{background:#11110f;color:#f4f2ed;}
+  .artist-card-open:focus-visible{outline:2px solid #11110f;outline-offset:4px;}
+  .placeholder-grid{display:grid;grid-template-columns:1fr;gap:16px;}
+  .placeholder-tile{
+    display:flex;min-height:190px;align-items:center;justify-content:center;
+    padding:24px;border:1px dashed var(--dim);color:var(--dim);
+    font-size:12px;line-height:1.6;text-align:center;
+  }
+  .placeholder-logos .placeholder-tile{min-height:120px;}
+  .testimonials{display:grid;grid-template-columns:1fr;gap:16px;margin-top:40px;}
+  .testimonial-placeholder{
+    min-height:160px;margin:0;padding:24px;border:1px solid var(--line);
+    color:var(--dim);font-size:14px;line-height:1.7;
+  }
+  .testimonial-placeholder cite{display:block;margin-top:20px;color:var(--dim);font-size:11px;font-style:normal;}
+  .event-placeholders{display:grid;grid-template-columns:1fr;gap:24px;}
+  .event-placeholder-list{display:grid;gap:12px;}
+  .event-placeholder{
+    min-height:90px;padding:22px;border:1px dashed var(--dim);
+    color:var(--dim);font-size:12px;line-height:1.6;
+  }
+  .process-list{display:grid;grid-template-columns:1fr;gap:24px;}
+  .process-step{padding-top:20px;border-top:1px solid var(--line);}
+  .process-step .idx{color:var(--dim);font-size:12px;}
+  .process-step h3{margin:22px 0 12px;font-size:20px;}
+  .process-step p{margin:0;color:var(--dim);font-size:14px;line-height:1.7;}
+  .quote-note{margin:28px 0 0;color:var(--dim);font-size:13px;}
+
+  .artist-dialog{
+    width:min(620px,calc(100vw - 32px));
+    max-height:85vh;max-height:85dvh;
+    padding:0;overflow:auto;
+    color:var(--fg);background:var(--bg);border:1px solid var(--line);
+  }
+  .artist-dialog::backdrop{background:rgba(0,0,0,.78);backdrop-filter:blur(4px);}
+  .artist-dialog-content{position:relative;padding:clamp(28px,6vw,52px);}
+  .artist-dialog-close{
+    position:absolute;top:14px;right:18px;
+    padding:4px 8px;border:0;background:transparent;color:var(--fg);
+    font:inherit;font-size:28px;line-height:1;cursor:pointer;
+  }
+  .artist-dialog-portrait{
+    display:block;width:min(100%,220px);aspect-ratio:1;
+    margin:0 0 28px;object-fit:cover;border-radius:8px;
+  }
+  .artist-dialog h2{margin-bottom:18px;}
+  .artist-dialog .lead{margin:0 0 24px;font-size:16px;}
+  .artist-profile-links{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 28px;}
+  .artist-profile-dates{margin:0 0 28px;padding-left:20px;color:var(--off);line-height:1.8;}
+  .artist-dialog-booking{margin-top:8px;}
+  .artist-dialog [hidden]{display:none;}
+  @media (max-width:600px){
+    .artist-dialog{width:calc(100vw - 24px);max-height:calc(100vh - 24px);max-height:calc(100dvh - 24px);}
+    .artist-dialog-content{padding:48px 22px 24px;}
+    .artist-dialog-portrait{width:min(100%,180px);}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .artist-dialog::backdrop{backdrop-filter:none;}
+  }
+  @media (min-width:560px){
+    .artists-grid,.placeholder-grid,.testimonials{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .process-list{grid-template-columns:repeat(2,minmax(0,1fr));}
+  }
+  @media (min-width:860px){
+    .artists-grid,.placeholder-grid,.testimonials{grid-template-columns:repeat(3,minmax(0,1fr));}
+    .process-list{grid-template-columns:repeat(4,minmax(0,1fr));}
+    .event-placeholders{grid-template-columns:1fr 1fr;}
+  }
   @media (max-width:600px){
     .intro-logo{width:min(190px,52vw);}
     .intro-logo path{animation-duration:.72s;}
@@ -432,111 +575,6 @@
     .intro-logo path:nth-child(4){animation-delay:.5s;}
     .intro-flare{top:calc(50% + 46px);width:min(220px,60vw);animation-duration:.45s;animation-delay:1.05s;}
     .intro-skip{right:18px;bottom:20px;}
-  }
-
-  /* ARTISTES — sticky, scroll-driven editorial roster */
-  .artists-section{
-    --artists-bg:#f4f2ed;
-    --artists-fg:#11110f;
-    position:relative;
-    padding:0;
-    color:var(--artists-fg);
-    background:var(--artists-bg);
-    border-bottom:1px solid #dedbd4;
-    isolation:isolate;
-  }
-  .artists-sticky{
-    position:sticky;top:0;
-    height:100vh;height:100svh;
-    overflow:hidden;
-  }
-  .artists-kicker-wrap{
-    position:absolute;z-index:2;top:clamp(28px,6vh,64px);left:50%;
-    width:min(1100px,100%);padding:0 32px;
-    transform:translateX(-50%);
-    pointer-events:none;
-  }
-  .artists-kicker-wrap .kicker{color:#77746e;margin-bottom:12px;}
-  .artists-kicker-wrap h2{
-    margin:0;font-size:clamp(12px,1.1vw,15px);font-weight:600;
-    letter-spacing:.12em;color:var(--artists-fg);
-  }
-  .artists-stage{
-    position:absolute;inset:0;
-    display:flex;align-items:center;justify-content:center;
-    overflow:hidden;
-  }
-  .artists-names{
-    position:absolute;top:50%;left:50%;
-    width:min(1120px,100%);padding:0 4vw;
-    transform:translate(-50%,-50%) translateY(var(--list-offset,0px));
-    text-align:center;will-change:transform;
-    transition:transform .38s cubic-bezier(.22,1,.36,1);
-  }
-  .artist-name-row{
-    display:flex;align-items:center;justify-content:center;
-    min-height:clamp(64px,11vw,132px);
-    padding:clamp(6px,1.2vw,14px) 0;
-    transform-origin:center;
-    will-change:transform,opacity;
-    transition:transform .38s cubic-bezier(.22,1,.36,1),opacity .38s cubic-bezier(.22,1,.36,1);
-  }
-  .artist-name-row .an-text{
-    display:inline-block;
-    font-family:Impact,'Arial Narrow','Helvetica Neue',Arial,sans-serif;
-    font-size:clamp(46px,9.1vw,132px);
-    font-weight:500;
-    letter-spacing:-.055em;
-    color:var(--artists-fg);
-    line-height:.86;
-    white-space:nowrap;
-    text-transform:uppercase;
-    transition:font-weight .25s ease;
-  }
-  .artist-name-row.is-active .an-text{font-weight:900;}
-  .artists-visual{
-    position:absolute;z-index:1;top:50%;right:max(7vw,calc((100vw - 1440px)/2 + 8vw));
-    width:clamp(190px,23vw,340px);height:auto;aspect-ratio:1;
-    transform:translateY(-50%);
-    pointer-events:none;
-  }
-  .artist-visual-img{
-    position:absolute;inset:0;
-    background-size:cover;background-position:center;
-    background-color:#c6c1b6;border-radius:18px;
-    opacity:0;
-    transform:translate(24px,12px) scale(.94) rotate(2deg);
-    box-shadow:0 28px 70px rgba(25,22,16,.18);
-    will-change:transform,opacity;
-  }
-  .artists-category{
-    position:absolute;z-index:2;top:calc(50% + clamp(34px,6vw,78px));left:50%;
-    transform:translateX(-50%);
-    color:#77746e;
-    font-size:10px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
-    opacity:0;white-space:nowrap;transition:opacity .3s ease;
-  }
-  .artists-category.visible{opacity:1;}
-  @media (prefers-reduced-motion:reduce){
-    .artists-names{transform:translate(-50%,-50%) !important;}
-    .artist-name-row{opacity:1 !important;transform:none !important;}
-    .artists-visual,.artists-category{display:none;}
-  }
-  @media (max-width:720px){
-    .artists-kicker-wrap{top:32px;padding:0 22px;}
-    .artists-names{top:50%;padding:0 12px;}
-    .artist-name-row{min-height:clamp(56px,13vw,88px);}
-    .artist-name-row .an-text{
-      font-size:clamp(42px,12.5vw,82px);
-      letter-spacing:-.06em;
-    }
-    .artists-visual{
-      top:auto;bottom:8%;right:50%;
-      width:min(34vw,164px);height:auto;aspect-ratio:1;
-      transform:translateX(50%);
-    }
-    .artist-visual-img{border-radius:14px;}
-    .artists-category{top:calc(50% + 36px);font-size:9px;}
   }
 </style>
 </head>
@@ -560,15 +598,15 @@
     <button class="navtoggle" id="navToggle" type="button" aria-label="Ouvrir le menu" aria-controls="navLinks" aria-expanded="false">☰</button>
     <div class="navlinks" id="navLinks">
       <a href="#about">Agence</a>
-      <a href="#services">Services</a>
+      <a href="#how-it-works">Programmation</a>
       <a href="#roster">Artistes</a>
-      <a href="#n8life">N8LIFE</a>
+      <a href="#references">Références</a>
       <a href="#contact">Contact</a>
     </div>
   </nav>
 </header>
 
-<main id="main-content" tabindex="-1">
+<main id="main-content">
 <section class="hero wrap">
   <div class="eyebrow hero-anim" style="--d:0">3H33 Agency</div>
   <h1 class="hero-anim" style="--d:100">Management &amp; booking DJ<br/>à Angers.<br/>L'agence qui fait vivre<br/>la nuit électronique.</h1>
@@ -581,18 +619,18 @@
 
 <section id="about" class="wrap">
   <div class="kicker">À propos</div>
-  <h2 class="reveal">Une agence de l'ombre, un impact réel.</h2>
+  <h2 class="reveal">Un accompagnement pensé pour la scène locale.</h2>
   <div class="about-grid">
     <div>
       <p class="lead reveal" style="--d:80">Basée à Angers, 3H33 est une agence de management et booking artistique spécialisée dans l'accompagnement de DJs et artistes de musique électronique. Notre approche : construire des carrières sur la durée plutôt que gérer des dates au coup par coup — stratégie artistique, développement d'image, booking cohérent.</p>
       <p class="lead reveal" style="--d:160">Nous travaillons également avec les bars et clubs de la région qui cherchent à structurer leur programmation musicale et à fidéliser leur public grâce à une sélection d'artistes pensée comme un vrai parti pris.</p>
-      <p class="lead reveal" style="--d:240">3H33 organise aussi ses propres événements nightlife à Angers et dans les environs, et a lancé <strong>N8LIFE</strong>, le premier réseau social entièrement dédié à la vie nocturne — actuellement en phase beta.</p>
+      <p class="lead reveal" style="--d:240">3H33 organise aussi ses propres événements nightlife à Angers et dans les environs. <strong>N8LIFE</strong>, le réseau social de la nuit, est actuellement en bêta.</p>
     </div>
     <div class="about-stats">
-      <div class="stat reveal" style="--d:0"><span class="num">05</span><span class="label">Artistes accompagnés</span></div>
-      <div class="stat reveal" style="--d:100"><span class="num">04</span><span class="label">Pôles d'activité</span></div>
-      <div class="stat reveal" style="--d:200"><span class="num">01</span><span class="label">Plateforme — N8LIFE</span></div>
-      <div class="stat reveal" style="--d:300"><span class="num">Angers</span><span class="label">Basée à</span></div>
+      <div class="stat reveal" style="--d:0"><span class="num">[À REMPLIR]</span><span class="label">Événements organisés</span></div>
+      <div class="stat reveal" style="--d:100"><span class="num">[À REMPLIR]</span><span class="label">Dates bookées</span></div>
+      <div class="stat reveal" style="--d:200"><span class="num">[À REMPLIR]</span><span class="label">Artistes accompagnés</span></div>
+      <div class="stat reveal" style="--d:300"><span class="num">[À REMPLIR]</span><span class="label">Partenaires</span></div>
     </div>
   </div>
 </section>
@@ -627,20 +665,66 @@
   </div>
 </section>
 
-<section id="roster" class="artists-section" aria-label="Artistes 3H33">
-  <div class="artists-sticky">
-    <div class="artists-kicker-wrap">
-      <div class="kicker">Artistes</div>
-      <h2 class="reveal" style="margin-bottom:0;">ARTISTES</h2>
-    </div>
-    <div class="artists-stage">
-      <div class="artists-names" id="artistsNames">
-      </div>
-      <div class="artists-visual" id="artistsVisual" aria-hidden="true"></div>
-      <div class="artists-category" id="artistsCategory" aria-live="polite"></div>
-    </div>
+<section id="how-it-works" class="wrap">
+  <div class="kicker">Bars &amp; clubs</div>
+  <h2 class="reveal">Comment ça marche.</h2>
+  <div class="process-list">
+    <article class="process-step reveal" style="--d:0">
+      <span class="idx">01</span>
+      <h3>Votre brief</h3>
+      <p>Présentez votre lieu, votre date et l’ambiance recherchée.</p>
+    </article>
+    <article class="process-step reveal" style="--d:80">
+      <span class="idx">02</span>
+      <h3>La proposition</h3>
+      <p>Échangeons sur la programmation et les artistes adaptés à votre projet.</p>
+    </article>
+    <article class="process-step reveal" style="--d:160">
+      <span class="idx">03</span>
+      <h3>Le devis</h3>
+      <p>Recevez une proposition détaillée, avec tarifs sur devis.</p>
+    </article>
+    <article class="process-step reveal" style="--d:240">
+      <span class="idx">04</span>
+      <h3>La validation</h3>
+      <p>Confirmez les modalités et préparez la date avec 3H33.</p>
+    </article>
+  </div>
+  <div class="section-action reveal">
+    <a class="btn-primary" href="#contact" data-contact-type="Club / lieu">Demander un devis</a>
   </div>
 </section>
+
+<section id="roster" class="artists-section wrap" aria-labelledby="artistsHeading">
+  <div class="kicker">Roster</div>
+  <h2 class="reveal" id="artistsHeading">Les artistes.</h2>
+  <p class="lead">Les noms, portraits et styles ci-dessous reprennent les informations déjà présentes dans le roster 3H33. Les informations non disponibles sont signalées à compléter.</p>
+  <div class="artists-grid" id="artistsGrid" role="list" aria-label="Artistes 3H33"></div>
+</section>
+
+<dialog class="artist-dialog" id="artistDialog" aria-labelledby="artistDialogTitle">
+  <div class="artist-dialog-content">
+    <button class="artist-dialog-close" id="artistDialogClose" type="button" aria-label="Fermer la fiche artiste">×</button>
+    <img class="artist-dialog-portrait" id="artistDialogPortrait" alt="" hidden>
+    <div class="kicker">Fiche artiste</div>
+    <h2 id="artistDialogTitle"></h2>
+    <p class="lead" id="artistDialogStyle"><strong>Style : </strong><span id="artistDialogStyleValue"></span></p>
+    <p class="lead" id="artistDialogBio"></p>
+    <div id="artistDialogLinksSection" role="group" aria-label="Liens de l’artiste">
+      <div class="kicker">Liens</div>
+      <div class="artist-profile-links" id="artistDialogLinks"></div>
+    </div>
+    <div id="artistDialogAvailabilitySection" role="group" aria-label="Disponibilité de l’artiste">
+      <div class="kicker">Disponibilité</div>
+      <p class="lead" id="artistDialogAvailability"></p>
+    </div>
+    <div id="artistDialogDatesSection" role="group" aria-label="Prochaines dates de l’artiste">
+      <div class="kicker">Prochaines dates</div>
+      <ul class="artist-profile-dates" id="artistDialogDates"></ul>
+    </div>
+    <a class="btn-primary artist-dialog-booking" href="#contact" data-contact-type="Événement" id="artistDialogBooking">Demander un booking</a>
+  </div>
+</dialog>
 
 <div class="roster-cta wrap">
   <p>Vous êtes artiste, club ou organisateur ? Parlons de votre prochain projet.</p>
@@ -654,9 +738,54 @@
   <div class="kicker">Projet</div>
   <h2>N8LIFE.</h2>
   <div class="n8life-box reveal">
-    <div class="n8-title">Le réseau social de la nuit.</div>
-    <p class="lead">3H33 est à l'origine de N8LIFE, le réseau social pensé pour la nightlife : découverte de soirées, suivi d'artistes, mise en relation entre clubbers, DJs et établissements. Actuellement en phase beta.</p>
+    <div class="n8-title">Le réseau social de la nuit, en bêta.</div>
+    <p class="lead">N8LIFE, le réseau social de la nuit, est actuellement en bêta.</p>
     <a href="https://n8life.fr" class="btn" target="_blank" rel="noopener">Rejoindre la beta</a>
+  </div>
+</section>
+
+<section id="references" class="wrap">
+  <div class="kicker">Références</div>
+  <h2 class="reveal">Les projets, lieux et retours.</h2>
+  <h3>Galerie</h3>
+  <div class="placeholder-grid" aria-label="Emplacements pour des photos de références">
+    <div class="placeholder-tile motion-reveal" style="--motion-delay:0ms">[À REMPLIR — photo d’événement validée]</div>
+    <div class="placeholder-tile motion-reveal" style="--motion-delay:80ms">[À REMPLIR — photo d’événement validée]</div>
+    <div class="placeholder-tile motion-reveal" style="--motion-delay:160ms">[À REMPLIR — photo d’événement validée]</div>
+  </div>
+  <h3 style="margin-top:48px;">Partenaires</h3>
+  <div class="placeholder-grid placeholder-logos" aria-label="Emplacements pour les logos des partenaires">
+    <div class="placeholder-tile motion-reveal">[À REMPLIR — logo partenaire autorisé]</div>
+    <div class="placeholder-tile motion-reveal">[À REMPLIR — logo partenaire autorisé]</div>
+    <div class="placeholder-tile motion-reveal">[À REMPLIR — logo partenaire autorisé]</div>
+  </div>
+  <h3 style="margin-top:48px;">Témoignages</h3>
+  <div class="testimonials">
+    <blockquote class="testimonial-placeholder motion-reveal">[À REMPLIR — témoignage validé]<cite>[À REMPLIR — nom et rôle]</cite></blockquote>
+    <blockquote class="testimonial-placeholder motion-reveal">[À REMPLIR — témoignage validé]<cite>[À REMPLIR — nom et rôle]</cite></blockquote>
+    <blockquote class="testimonial-placeholder motion-reveal">[À REMPLIR — témoignage validé]<cite>[À REMPLIR — nom et rôle]</cite></blockquote>
+  </div>
+  <p class="quote-note">Ne publier que des visuels autorisés et des témoignages approuvés par leurs auteurs.</p>
+</section>
+
+<section id="events" class="wrap">
+  <div class="kicker">Agenda</div>
+  <h2 class="reveal">Dates &amp; soirées.</h2>
+  <div class="event-placeholders">
+    <div>
+      <h3>Prochaines dates</h3>
+      <div class="event-placeholder-list">
+        <div class="event-placeholder motion-reveal" style="--motion-delay:0ms">[À REMPLIR — date, lieu et artiste confirmés]</div>
+        <div class="event-placeholder motion-reveal" style="--motion-delay:80ms">[À REMPLIR — date, lieu et artiste confirmés]</div>
+      </div>
+    </div>
+    <div>
+      <h3>Dernières soirées</h3>
+      <div class="event-placeholder-list">
+        <div class="event-placeholder motion-reveal" style="--motion-delay:0ms">[À REMPLIR — soirée passée, lieu et visuel autorisé]</div>
+        <div class="event-placeholder motion-reveal" style="--motion-delay:80ms">[À REMPLIR — soirée passée, lieu et visuel autorisé]</div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -720,7 +849,10 @@
       <span class="footer-heading">Explorer</span>
       <a href="#about">L'agence</a>
       <a href="#services">Services</a>
+      <a href="#how-it-works">Programmation</a>
       <a href="#roster">Artistes</a>
+      <a href="#references">Références</a>
+      <a href="#events">Dates &amp; soirées</a>
       <a href="#n8life">N8LIFE</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -734,6 +866,7 @@
   <div class="footer-bottom">
     <span>© <span id="year"></span> 3H33 Agency</span>
     <a href="#top">Retour en haut</a>
+    <a href="/mentions-legales.html">Mentions légales</a>
   </div>
 </footer>
 
@@ -800,18 +933,34 @@
       window.matchMedia('(max-width: 600px)').matches ? 2450 : 3000);
   })();
 
-  document.getElementById('navToggle').addEventListener('click', function(){
-    var navLinks = document.getElementById('navLinks');
-    var isOpen = navLinks.classList.toggle('open');
-    document.getElementById('navToggle').setAttribute('aria-expanded', String(isOpen));
-    document.getElementById('navToggle').setAttribute('aria-label', isOpen ? 'Fermer le menu' : 'Ouvrir le menu');
+  var navToggle = document.getElementById('navToggle');
+  var navLinks = document.getElementById('navLinks');
+  var mobileNavigation = window.matchMedia('(max-width: 720px)');
+  function setNavigationOpen(isOpen){
+    var shouldOpen = mobileNavigation.matches && isOpen;
+    navLinks.classList.toggle('open', shouldOpen);
+    navLinks.inert = mobileNavigation.matches && !shouldOpen;
+    navToggle.setAttribute('aria-expanded', String(shouldOpen));
+    navToggle.setAttribute('aria-label', shouldOpen ? 'Fermer le menu' : 'Ouvrir le menu');
+    navToggle.textContent = shouldOpen ? '×' : '☰';
+  }
+  setNavigationOpen(false);
+  navToggle.addEventListener('click', function(){
+    setNavigationOpen(!navLinks.classList.contains('open'));
   });
   document.querySelectorAll('.navlinks a').forEach(function(a){
     a.addEventListener('click', function(){
-      document.getElementById('navLinks').classList.remove('open');
-      document.getElementById('navToggle').setAttribute('aria-expanded', 'false');
-      document.getElementById('navToggle').setAttribute('aria-label', 'Ouvrir le menu');
+      setNavigationOpen(false);
     });
+  });
+  document.addEventListener('keydown', function(event){
+    if(event.key === 'Escape' && navLinks.classList.contains('open')){
+      setNavigationOpen(false);
+      navToggle.focus();
+    }
+  });
+  window.addEventListener('resize', function(){
+    if(!mobileNavigation.matches) setNavigationOpen(false);
   });
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -877,22 +1026,199 @@
   }
 
   // Scroll reveal: fade + slide-up on elements with .reveal, triggered once.
+  var motionObserver = null;
+  function observeMotionReveal(elements){
+    if(!motionObserver || !elements || !elements.length) return;
+    var observed = [];
+    try{
+      Array.prototype.forEach.call(elements, function(element){
+        motionObserver.observe(element);
+        observed.push(element);
+      });
+      document.documentElement.classList.add('motion-ready');
+    }catch(error){
+      observed.forEach(function(element){ motionObserver.unobserve(element); });
+    }
+  }
+
   (function(){
     var items = document.querySelectorAll('.reveal');
-    if(!items.length) return;
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
-      items.forEach(function(el){ el.classList.add('in-view'); });
+    var motionItems = document.querySelectorAll('.motion-reveal');
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+      typeof window.IntersectionObserver !== 'function'){
       return;
     }
-    var io = new IntersectionObserver(function(entries){
-      entries.forEach(function(entry){
-        if(entry.isIntersecting){
-          entry.target.classList.add('in-view');
-          io.unobserve(entry.target);
-        }
+
+    var observer;
+    try{
+      observer = new IntersectionObserver(function(entries){
+        entries.forEach(function(entry){
+          if(!entry.isIntersecting) return;
+          if(entry.target.classList.contains('reveal')) entry.target.classList.add('in-view');
+          if(entry.target.classList.contains('motion-reveal')) entry.target.classList.add('motion-in-view');
+          observer.unobserve(entry.target);
+        });
+      }, {threshold:0.12, rootMargin:'0px 0px -32px 0px'});
+    }catch(error){
+      return;
+    }
+    motionObserver = observer;
+    if(items.length){
+      Array.prototype.forEach.call(items, function(el){ observer.observe(el); });
+      document.documentElement.classList.add('reveal-ready');
+    }
+    observeMotionReveal(motionItems);
+  })();
+
+  (function(){
+    var grid = document.getElementById('artistsGrid');
+    var dialog = document.getElementById('artistDialog');
+    if(!grid || !dialog) return;
+
+    var artists = [
+      {name:'ADR', image:'artists/adr.jpg', category:'Afro Généraliste', profile:{bio:'', links:{soundcloud:'', spotify:'', instagram:''}, availability:'', upcomingDates:[]}},
+      {name:'KAZE', image:'artists/kaze.jpg', category:'Uptempo', profile:{bio:'', links:{soundcloud:'', spotify:'', instagram:''}, availability:'', upcomingDates:[]}},
+      {name:'NØXIA', image:'artists/noxia.png', category:'Dark Techno', profile:{bio:'', links:{soundcloud:'', spotify:'', instagram:''}, availability:'', upcomingDates:[]}},
+      {name:'CARNAGE', image:'artists/carnage.jpg', category:'Hard Techno', profile:{bio:'', links:{soundcloud:'', spotify:'', instagram:''}, availability:'', upcomingDates:[]}},
+      {name:'SKRIOUT', image:'artists/skriout.jpg', category:'Généraliste', profile:{bio:'', links:{soundcloud:'', spotify:'', instagram:''}, availability:'', upcomingDates:[]}},
+      {name:"TEK'S", image:'artists/teks.png', category:'Techno', profile:{bio:'', links:{soundcloud:'', spotify:'', instagram:''}, availability:'', upcomingDates:[]}}
+    ];
+    var fragment = document.createDocumentFragment();
+    var activeTrigger = null;
+    var closeButton = document.getElementById('artistDialogClose');
+    var labels = {soundcloud:'SoundCloud',spotify:'Spotify',instagram:'Instagram'};
+
+    function addProfileLink(list, artist, key){
+      var item = document.createElement('li');
+      var url = artist.profile.links && artist.profile.links[key];
+      if(typeof url === 'string' && /^https:\/\//i.test(url.trim())){
+        var link = document.createElement('a');
+        link.href = url.trim();
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = labels[key];
+        link.setAttribute('aria-label', labels[key] + ' de ' + artist.name + ', ouvre un nouvel onglet');
+        item.appendChild(link);
+      }else{
+        item.className = 'is-placeholder';
+        item.textContent = labels[key] + ' — [À REMPLIR]';
+      }
+      list.appendChild(item);
+    }
+
+    function openProfile(artist, trigger){
+      activeTrigger = trigger;
+      var portrait = document.getElementById('artistDialogPortrait');
+      portrait.src = artist.image;
+      portrait.alt = 'Portrait de ' + artist.name;
+      portrait.hidden = !artist.image;
+      document.getElementById('artistDialogTitle').textContent = artist.name;
+      document.getElementById('artistDialogStyleValue').textContent = artist.category || '[À REMPLIR]';
+      document.getElementById('artistDialogBio').textContent =
+        artist.profile.bio.trim() || '[À REMPLIR — bio courte validée]';
+      document.getElementById('artistDialogAvailability').textContent =
+        artist.profile.availability.trim() || '[À REMPLIR]';
+
+      var links = document.getElementById('artistDialogLinks');
+      links.textContent = '';
+      Object.keys(labels).forEach(function(key){ addProfileLink(links, artist, key); });
+
+      var dates = document.getElementById('artistDialogDates');
+      dates.textContent = '';
+      var upcomingDates = artist.profile.upcomingDates.filter(function(date){
+        return typeof date === 'string' && date.trim();
       });
-    }, {threshold:0.2, rootMargin:'0px 0px -40px 0px'});
-    items.forEach(function(el){ io.observe(el); });
+      (upcomingDates.length ? upcomingDates : ['[À REMPLIR — dates confirmées]']).forEach(function(date){
+        var item = document.createElement('li');
+        item.textContent = date;
+        dates.appendChild(item);
+      });
+
+      dialog.showModal();
+      closeButton.focus();
+    }
+
+    artists.forEach(function(artist,index){
+      var card = document.createElement('article');
+      card.className = 'artist-card motion-reveal';
+      card.setAttribute('role','listitem');
+      card.style.setProperty('--motion-delay', Math.min(index * 70, 280) + 'ms');
+
+      var portraitFrame = document.createElement('div');
+      portraitFrame.className = 'artist-card-portrait';
+      var portrait = document.createElement('img');
+      portrait.src = artist.image;
+      portrait.alt = 'Portrait de ' + artist.name;
+      portrait.loading = 'lazy';
+      portrait.decoding = 'async';
+      portrait.width = 640;
+      portrait.height = 480;
+      portraitFrame.appendChild(portrait);
+      card.appendChild(portraitFrame);
+
+      var content = document.createElement('div');
+      content.className = 'artist-card-content';
+      var title = document.createElement('h3');
+      title.className = 'artist-card-title';
+      title.textContent = artist.name;
+      content.appendChild(title);
+
+      var style = document.createElement('p');
+      style.className = 'artist-card-style';
+      style.textContent = artist.category || '[À REMPLIR — style confirmé]';
+      content.appendChild(style);
+
+      var bio = document.createElement('p');
+      bio.className = 'artist-card-bio';
+      bio.textContent = artist.profile.bio.trim() || '[À REMPLIR — bio courte validée]';
+      content.appendChild(bio);
+
+      var links = document.createElement('ul');
+      links.className = 'artist-card-links';
+      Object.keys(labels).forEach(function(key){ addProfileLink(links, artist, key); });
+      content.appendChild(links);
+
+      var actions = document.createElement('div');
+      actions.className = 'artist-card-actions';
+      var details = document.createElement('button');
+      details.className = 'artist-card-open';
+      details.type = 'button';
+      details.textContent = 'Voir la fiche';
+      details.setAttribute('aria-haspopup','dialog');
+      details.setAttribute('aria-label','Voir la fiche de ' + artist.name);
+      details.addEventListener('click',function(){ openProfile(artist,details); });
+      actions.appendChild(details);
+
+      var booking = document.createElement('a');
+      booking.className = 'btn-primary';
+      booking.href = '#contact';
+      booking.setAttribute('data-contact-type','Événement');
+      booking.textContent = 'Booker cet artiste';
+      booking.addEventListener('click',function(){
+        var typeField = document.getElementById('contactType');
+        if(typeField) typeField.value = 'Événement';
+      });
+      actions.appendChild(booking);
+      content.appendChild(actions);
+      card.appendChild(content);
+      fragment.appendChild(card);
+    });
+
+    grid.appendChild(fragment);
+    observeMotionReveal(grid.querySelectorAll('.motion-reveal'));
+
+    closeButton.addEventListener('click',function(){ dialog.close(); });
+    dialog.addEventListener('close',function(){
+      if(activeTrigger) activeTrigger.focus();
+      activeTrigger = null;
+    });
+    dialog.addEventListener('click',function(event){
+      if(event.target === dialog) dialog.close();
+    });
+    document.getElementById('artistDialogBooking').addEventListener('click',function(){
+      dialog.close();
+    });
+
   })();
 
   // ARTISTES — pin natif et progression entierement pilotee par le scroll.
@@ -902,26 +1228,39 @@
     if(!section || !namesWrap) return;
 
     var artists = [
-      {name:'ADR', image:'artists/adr.jpg', category:'Afro Généraliste'},
-      {name:'KAZE', image:'artists/kaze.jpg', category:'Uptempo'},
-      {name:'NØXIA', image:'artists/noxia.png', category:'Dark Techno'},
-      {name:'CARNAGE', image:'artists/carnage.jpg', category:'Hard Techno'},
-      {name:'SKRIOUT', image:'artists/skriout.jpg', category:'Généraliste'},
-      {name:"TEK'S", image:'artists/teks.png', category:'Techno'}
+      {name:'ADR', image:'artists/adr.jpg', category:'Afro Généraliste', profile:{bio:'', links:{soundcloud:'', spotify:'', instagram:''}, availability:'', upcomingDates:[]}},
+      {name:'KAZE', image:'artists/kaze.jpg', category:'Uptempo', profile:{bio:'', links:{soundcloud:'', spotify:'', instagram:''}, availability:'', upcomingDates:[]}},
+      {name:'NØXIA', image:'artists/noxia.png', category:'Dark Techno', profile:{bio:'', links:{soundcloud:'', spotify:'', instagram:''}, availability:'', upcomingDates:[]}},
+      {name:'CARNAGE', image:'artists/carnage.jpg', category:'Hard Techno', profile:{bio:'', links:{soundcloud:'', spotify:'', instagram:''}, availability:'', upcomingDates:[]}},
+      {name:'SKRIOUT', image:'artists/skriout.jpg', category:'Généraliste', profile:{bio:'', links:{soundcloud:'', spotify:'', instagram:''}, availability:'', upcomingDates:[]}},
+      {name:"TEK'S", image:'artists/teks.png', category:'Techno', profile:{bio:'', links:{soundcloud:'', spotify:'', instagram:''}, availability:'', upcomingDates:[]}}
     ];
     var visualWrap = document.getElementById('artistsVisual');
+    var artistDialog = document.getElementById('artistDialog');
+    var artistDialogClose = document.getElementById('artistDialogClose');
+    var activeArtistTrigger = null;
     var namesFragment = document.createDocumentFragment();
     var visualsFragment = document.createDocumentFragment();
 
     artists.forEach(function(artist, index){
       var row = document.createElement('div');
       row.className = 'artist-name-row';
+      row.setAttribute('role', 'listitem');
       row.setAttribute('data-i', index);
+      var trigger = document.createElement('button');
+      trigger.className = 'artist-open';
+      trigger.type = 'button';
+      trigger.setAttribute('aria-haspopup', 'dialog');
+      trigger.setAttribute('aria-label', 'Ouvrir la fiche de ' + artist.name);
       var text = document.createElement('span');
       text.className = 'an-text';
       text.textContent = artist.name;
-      row.appendChild(text);
+      trigger.appendChild(text);
+      row.appendChild(trigger);
       namesFragment.appendChild(row);
+      trigger.addEventListener('click', function(){
+        openArtistProfile(artist, trigger);
+      });
 
       if(artist.image){
         var visual = document.createElement('div');
@@ -941,6 +1280,76 @@
     var categoryEl = document.getElementById('artistsCategory');
     var N = artists.length;
     if(!N) return;
+
+    function showOptionalText(element, value){
+      var text = typeof value === 'string' ? value.trim() : '';
+      element.textContent = text;
+      element.hidden = !text;
+      return !!text;
+    }
+
+    function openArtistProfile(artist, trigger){
+      var profile = artist.profile || {};
+      var portrait = document.getElementById('artistDialogPortrait');
+      var linksSection = document.getElementById('artistDialogLinksSection');
+      var linksList = document.getElementById('artistDialogLinks');
+      var datesSection = document.getElementById('artistDialogDatesSection');
+      var datesList = document.getElementById('artistDialogDates');
+      activeArtistTrigger = trigger;
+
+      document.getElementById('artistDialogTitle').textContent = artist.name;
+      portrait.src = artist.image || '';
+      portrait.hidden = !artist.image;
+      showOptionalText(document.getElementById('artistDialogStyleValue'), artist.category);
+      document.getElementById('artistDialogStyle').hidden = !artist.category;
+      showOptionalText(document.getElementById('artistDialogBio'), profile.bio);
+      showOptionalText(document.getElementById('artistDialogAvailability'), profile.availability);
+      document.getElementById('artistDialogAvailabilitySection').hidden =
+        document.getElementById('artistDialogAvailability').hidden;
+
+      linksList.textContent = '';
+      var linkLabels = {soundcloud:'SoundCloud', spotify:'Spotify', instagram:'Instagram'};
+      Object.keys(linkLabels).forEach(function(key){
+        var url = profile.links && profile.links[key];
+        if(typeof url !== 'string' || !/^https:\/\//i.test(url.trim())) return;
+        var link = document.createElement('a');
+        link.className = 'btn-secondary';
+        link.href = url.trim();
+        link.target = '_blank';
+        link.rel = 'noopener noreferrer';
+        link.textContent = linkLabels[key];
+        link.setAttribute('aria-label', linkLabels[key] + ' de ' + artist.name + ', ouvre un nouvel onglet');
+        linksList.appendChild(link);
+      });
+      linksSection.hidden = !linksList.children.length;
+
+      datesList.textContent = '';
+      var dates = Array.isArray(profile.upcomingDates) ? profile.upcomingDates : [];
+      dates.forEach(function(date){
+        if(typeof date !== 'string' || !date.trim()) return;
+        var item = document.createElement('li');
+        item.textContent = date.trim();
+        datesList.appendChild(item);
+      });
+      datesSection.hidden = !datesList.children.length;
+
+      artistDialog.showModal();
+      artistDialogClose.focus();
+    }
+
+    artistDialogClose.addEventListener('click', function(){
+      artistDialog.close();
+    });
+    artistDialog.addEventListener('close', function(){
+      if(activeArtistTrigger) activeArtistTrigger.focus();
+      activeArtistTrigger = null;
+    });
+    artistDialog.addEventListener('click', function(event){
+      if(event.target === artistDialog) artistDialog.close();
+    });
+    document.getElementById('artistDialogBooking').addEventListener('click', function(){
+      artistDialog.close();
+    });
 
     var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     var rowCenters = [];
