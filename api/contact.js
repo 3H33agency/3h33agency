@@ -1,4 +1,4 @@
-const ALLOWED_TYPES = new Set(['Artiste', 'Club / lieu', 'Événement']);
+const ALLOWED_TYPES = new Set(['Artiste', 'Club / lieu', 'Événement', 'Partenaire']);
 const DEFAULT_ORIGINS = ['https://3h33agency.fr', 'https://www.3h33agency.fr'];
 
 function respond(res, status, body) {

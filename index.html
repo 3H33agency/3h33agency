@@ -1,21 +1,21 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-audience="artist">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>3H33 Agency — Booking DJ &amp; management artistique à Angers</title>
-<meta name="description" content="Agence de management et booking de DJs à Angers. Accompagnement artistique, programmation de bars et clubs, événements électro. À l'origine de N8LIFE, en bêta.">
+<title>3H33 Agency — Artistes &amp; lieux de vie à Angers</title>
+<meta name="description" content="3H33 Agency conseille les bars et établissements, crée des événements sur mesure pour relancer leur activité et accompagne les artistes dans la durée. Basée à Angers.">
 <link rel="canonical" href="https://www.3h33agency.fr/">
 <meta name="theme-color" content="#000000">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="fr_FR">
 <meta property="og:site_name" content="3H33 Agency">
-<meta property="og:title" content="3H33 Agency — Booking DJ &amp; management artistique à Angers">
-<meta property="og:description" content="Agence de management et booking de DJs à Angers. Accompagnement artistique, programmation de bars et clubs, événements électro. À l'origine de N8LIFE, en bêta.">
+<meta property="og:title" content="3H33 Agency — Artistes &amp; lieux de vie à Angers">
+<meta property="og:description" content="3H33 Agency conseille les bars et établissements, crée des événements sur mesure pour relancer leur activité et accompagne les artistes dans la durée. Basée à Angers.">
 <meta property="og:url" content="https://www.3h33agency.fr/">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="3H33 Agency — Booking DJ &amp; management artistique à Angers">
-<meta name="twitter:description" content="Agence de management et booking de DJs à Angers. Accompagnement artistique, programmation de bars et clubs, événements électro. À l'origine de N8LIFE, en bêta.">
+<meta name="twitter:title" content="3H33 Agency — Artistes &amp; lieux de vie à Angers">
+<meta name="twitter:description" content="3H33 Agency conseille les bars et établissements, crée des événements sur mesure pour relancer leur activité et accompagne les artistes dans la durée. Basée à Angers.">
 <script>
   (function(){
     try{
@@ -33,7 +33,7 @@
   "@type": "Organization",
   "name": "3H33 Agency",
   "url": "https://www.3h33agency.fr/",
-  "description": "Agence de management et booking de DJs à Angers. Accompagnement artistique, programmation de bars et clubs, événements électro. À l'origine de N8LIFE, en bêta.",
+  "description": "3H33 Agency conseille les bars et établissements, crée des événements sur mesure pour relancer leur activité et accompagne les artistes dans la durée. Basée à Angers.",
   "email": "contact@n8life.fr",
   "sameAs": [
     "https://instagram.com/3h33agency"
@@ -82,27 +82,29 @@
     background:#000;opacity:1;
   }
   .intro-overlay[hidden]{display:none;}
+  .intro-video{
+    position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+    opacity:0;transition:opacity .55s ease;
+  }
+  .intro-overlay.has-video .intro-video{opacity:1;}
   .intro-status{
     position:absolute;width:1px;height:1px;padding:0;margin:-1px;
     overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
   }
   .intro-logo{
-    display:block;width:min(260px,58vw);height:auto;overflow:visible;
-    transform-origin:center;filter:drop-shadow(0 0 14px rgba(255,255,255,.12));
+    position:relative;z-index:1;display:block;width:min(480px,74vw);max-height:62vh;height:auto;
+    object-fit:contain;transform-origin:center;
+    filter:brightness(0) invert(1) drop-shadow(0 0 20px rgba(198,244,106,.32));
+    animation:introLogoReveal .8s cubic-bezier(.16,1,.3,1) .2s both;
     transition:transform .48s cubic-bezier(.2,.75,.25,1),opacity .38s ease;
   }
-  .intro-logo path{
-    fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;
-    stroke-dasharray:1;stroke-dashoffset:1;
-    animation:introDraw 1.1s cubic-bezier(.5,0,.25,1) forwards;
+  .intro-overlay.has-video .intro-logo{opacity:0;visibility:hidden;}
+  @keyframes introLogoReveal{
+    from{opacity:0;transform:scale(.94);filter:brightness(0) invert(1) blur(12px);}
+    to{opacity:1;transform:scale(1);filter:brightness(0) invert(1) drop-shadow(0 0 20px rgba(198,244,106,.32));}
   }
-  .intro-logo path:nth-child(1){animation-delay:.12s;}
-  .intro-logo path:nth-child(2){animation-delay:.34s;}
-  .intro-logo path:nth-child(3){animation-delay:.56s;}
-  .intro-logo path:nth-child(4){animation-delay:.78s;}
-  @keyframes introDraw{to{stroke-dashoffset:0;}}
   .intro-flare{
-    position:absolute;top:calc(50% + 62px);left:50%;
+    position:absolute;z-index:2;top:calc(50% + 180px);left:50%;
     width:min(300px,64vw);height:1px;
     background:linear-gradient(90deg,transparent,rgba(255,255,255,.75),transparent);
     opacity:0;transform:translateX(-50%) scaleX(.3);
@@ -123,7 +125,26 @@
   .intro-skip:focus-visible{outline:2px solid #fff;outline-offset:4px;}
   @keyframes introSkipIn{from{opacity:0}to{opacity:1}}
   .intro-overlay.is-exiting{opacity:0;visibility:hidden;pointer-events:none;transition:opacity .48s ease,visibility 0s .48s;}
-  .intro-overlay.is-exiting .intro-logo{transform:translate(var(--intro-x,0),var(--intro-y,0)) scale(var(--intro-scale,1));opacity:0;}
+  .intro-overlay.is-exiting .intro-logo{transform:scale(.96);opacity:0;}
+
+  .grain-overlay{
+    position:fixed;inset:0;z-index:80;pointer-events:none;opacity:.022;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.22'/%3E%3C/svg%3E");
+    animation:grainBreathe 12s ease-in-out infinite;
+  }
+  @keyframes grainBreathe{0%,100%{opacity:.018;}50%{opacity:.026;}}
+  .cursor-orb{
+    position:fixed;z-index:120;top:0;left:0;width:9px;height:9px;border-radius:50%;
+    opacity:0;pointer-events:none;background:var(--accent);
+    box-shadow:0 0 16px rgba(198,244,106,.48);
+    transform:translate3d(var(--cursor-x,0px),var(--cursor-y,0px),0) translate(-50%,-50%) scale(.65);
+    transition:opacity .18s ease,transform .2s cubic-bezier(.16,1,.3,1);
+    will-change:transform;
+  }
+  .cursor-orb.is-visible{opacity:.72;transform:translate3d(var(--cursor-x,0px),var(--cursor-y,0px),0) translate(-50%,-50%) scale(1);}
+  .cursor-orb.is-hovering{opacity:.9;transform:translate3d(var(--cursor-x,0px),var(--cursor-y,0px),0) translate(-50%,-50%) scale(1.8);}
+  @media (hover:none),(pointer:coarse){.grain-overlay,.cursor-orb{display:none;}}
+  @media (prefers-reduced-motion:reduce){.grain-overlay,.cursor-orb{display:none;}}
 
   header{
     position:sticky;top:0;z-index:50;
@@ -134,17 +155,49 @@
   nav.wrap{
     display:flex;align-items:center;justify-content:space-between;
     height:76px;
+    gap:20px;
   }
-  .logo{font-size:20px;font-weight:700;letter-spacing:4px;}
-  .navlinks{display:flex;gap:36px;}
+  .logo{display:flex;flex:0 0 96px;width:96px;height:76px;align-items:center;overflow:hidden;}
+  .logo img{display:block;width:96px;height:auto;flex:none;filter:brightness(0) invert(1);}
+  .navlinks{display:flex;gap:36px;margin-left:auto;}
   .navlinks a{
     font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--dim);
     transition:color .2s ease;
   }
   .navlinks a:hover{color:var(--fg);}
-  .navtoggle{display:none;background:none;border:none;color:var(--fg);font-size:22px;cursor:pointer;}
+  .navtoggle{
+    display:none;align-items:center;justify-content:center;gap:9px;min-height:40px;padding:0 13px;
+    border:1px solid var(--line);color:var(--fg);background:rgba(255,255,255,.025);
+    font:inherit;font-size:9px;font-weight:650;letter-spacing:1.3px;text-transform:uppercase;cursor:pointer;
+    transition:border-color .2s ease,background .2s ease;
+  }
+  .navtoggle:hover,.navtoggle[aria-expanded="true"]{border-color:rgba(255,255,255,.48);background:rgba(255,255,255,.06);}
+  .navtoggle:focus-visible{outline:2px solid var(--fg);outline-offset:3px;}
+  .navtoggle-icon{display:grid;gap:4px;width:15px;}
+  .navtoggle-icon i{display:block;width:100%;height:1px;background:currentColor;transition:transform .2s ease,opacity .2s ease;}
+  .navtoggle[aria-expanded="true"] .navtoggle-icon i:first-child{transform:translateY(5px) rotate(45deg);}
+  .navtoggle[aria-expanded="true"] .navtoggle-icon i:nth-child(2){opacity:0;}
+  .navtoggle[aria-expanded="true"] .navtoggle-icon i:last-child{transform:translateY(-5px) rotate(-45deg);}
+  .audience-switch{display:flex;flex-shrink:0;padding:3px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.035);transition:border-color .2s ease,box-shadow .2s ease;}
+  .audience-switch button{
+    min-height:36px;padding:0 13px;border:0;border-radius:999px;color:var(--dim);background:transparent;
+    font:inherit;font-size:9px;font-weight:650;letter-spacing:1px;text-transform:uppercase;cursor:pointer;
+    transition:color .2s ease,background .2s ease;
+  }
+  .audience-switch button:hover{color:var(--fg);}
+  .audience-switch button[aria-pressed="true"]{
+    color:#11120e;background:var(--accent);
+    box-shadow:0 0 0 1px rgba(198,244,106,.2),0 0 18px rgba(198,244,106,.24);
+  }
+  .audience-switch button[aria-pressed="true"]::before{content:"✓";margin-right:6px;font-size:11px;font-weight:800;}
+  .audience-switch:has(button[aria-pressed="true"]){border-color:rgba(198,244,106,.58);box-shadow:0 0 18px rgba(198,244,106,.1);}
+  .audience-switch button:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+  .nav-locale{
+    flex-shrink:0;padding-left:16px;border-left:1px solid var(--line);
+    color:var(--fg);font-size:9px;font-weight:650;letter-spacing:1.4px;
+  }
 
-  @media (max-width:720px){
+  @media (max-width:960px){
     .navlinks{
       position:absolute;top:76px;left:0;right:0;
       background:var(--bg);flex-direction:column;gap:0;
@@ -161,6 +214,32 @@
       padding:18px 0;border-bottom:1px solid var(--line);font-size:13px;
     }
     .navtoggle{display:block;}
+    .navtoggle{display:flex;order:4;margin-left:0;}
+    .logo{order:1;}
+    .audience-switch{order:2;}
+    .nav-locale{order:3;}
+    nav.wrap{gap:10px;}
+    .navlinks{margin-left:0;}
+    .audience-switch{margin-left:auto;}
+    .audience-switch button{padding:0 10px;font-size:8px;letter-spacing:.7px;}
+    .nav-locale{padding-left:10px;}
+  }
+  @media (max-width:600px){
+    .logo{flex-basis:88px;width:88px;}
+    .logo img{width:88px;}
+    nav.wrap{gap:8px;}
+    .audience-switch button{padding:0 6px;}
+    .nav-locale{padding-left:8px;}
+    .navtoggle{gap:7px;padding:0 10px;}
+  }
+  @media (max-width:360px){
+    nav.wrap{gap:7px;}
+    .logo{flex-basis:70px;width:70px;}
+    .logo img{width:70px;}
+    .audience-switch button{padding:0 6px;font-size:7px;letter-spacing:.5px;}
+    .nav-locale{padding-left:7px;font-size:8px;}
+    .navtoggle{width:36px;padding:0;}
+    .navtoggle-label{display:none;}
   }
 
   .hero{
@@ -192,9 +271,9 @@
     min-height:52px;padding:0 26px;
     color:var(--bg);background:var(--fg);border:1px solid var(--fg);
     font-size:11px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;
-    transition:transform .2s cubic-bezier(.16,1,.3,1),background .2s ease,color .2s ease;
+    transition:transform .2s cubic-bezier(.16,1,.3,1),background .2s ease,color .2s ease,box-shadow .2s ease;
   }
-  .btn-primary:hover,.btn-primary:focus-visible{transform:translateY(-2px);background:transparent;color:var(--fg);}
+  .btn-primary:hover,.btn-primary:focus-visible{transform:translateY(-2px) scale(1.01);background:transparent;color:var(--fg);box-shadow:0 8px 28px rgba(198,244,106,.12);}
   .btn-primary:active{transform:translateY(0);}
   .btn-secondary{
     display:inline-flex;align-items:center;justify-content:center;
@@ -363,6 +442,38 @@
   }
   @media (max-width:600px){.n8life-box{padding:40px 26px;}}
   .n8life-box .n8-title{font-size:clamp(30px,5vw,52px);font-weight:700;letter-spacing:2px;}
+  .n8life-box .n8-title{font-size:clamp(42px,7vw,76px);letter-spacing:-.07em;line-height:.95;}
+  .n8life-pitch{max-width:760px;margin:0;font-size:clamp(21px,3.2vw,34px);font-weight:600;letter-spacing:-.035em;line-height:1.18;}
+  .n8life-copy{max-width:720px;margin:0;font-size:clamp(15px,1.7vw,18px);line-height:1.75;color:var(--off);}
+  .n8life-actions{display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px;margin-top:4px;}
+  .n8life-dialog{
+    width:min(720px,calc(100vw - 32px));max-height:min(86vh,860px);max-height:min(86dvh,860px);
+    padding:0;overflow:auto;color:var(--fg);background:var(--bg);border:1px solid var(--line);
+  }
+  .n8life-dialog::backdrop{background:rgba(0,0,0,.8);backdrop-filter:blur(5px);}
+  .n8life-article{padding:clamp(28px,6vw,56px);}
+  .n8life-article-head{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:28px;}
+  .n8life-article-kicker{margin-bottom:13px;color:var(--accent);font-size:9px;font-weight:650;letter-spacing:2px;text-transform:uppercase;}
+  .n8life-article h2{max-width:590px;margin:0 0 18px;font-size:clamp(36px,7vw,64px);letter-spacing:-.06em;line-height:1;}
+  .n8life-article-intro{max-width:590px;margin:0 0 34px;color:var(--off);font-size:18px;line-height:1.75;}
+  .n8life-features{display:grid;grid-template-columns:1fr;gap:0;margin:0 0 32px;border-top:1px solid var(--line);}
+  .n8life-feature{padding:25px 0 23px;border-bottom:1px solid var(--line);}
+  .n8life-feature-index{display:block;margin-bottom:12px;color:var(--accent);font-size:9px;letter-spacing:1.5px;}
+  .n8life-feature h3{margin:0 0 10px;font-size:clamp(21px,3vw,25px);letter-spacing:-.4px;line-height:1.2;}
+  .n8life-feature p{margin:0;color:var(--dim);font-size:16px;line-height:1.72;}
+  .n8life-article-footer{display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px;padding-top:2px;}
+  .n8life-article-footer p{margin:0;color:var(--dim);font-size:14px;line-height:1.65;}
+  .n8life-dialog-close{
+    display:inline-flex;width:42px;height:42px;flex:0 0 42px;align-items:center;justify-content:center;
+    border:1px solid var(--line);color:var(--fg);background:transparent;font:inherit;font-size:25px;cursor:pointer;
+  }
+  .n8life-dialog-close:hover{border-color:var(--accent);color:var(--accent);}
+  .n8life-action{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 20px;border:1px solid var(--accent);color:#11120e;background:var(--accent);font-size:10px;font-weight:700;letter-spacing:1.3px;text-transform:uppercase;transition:transform .2s ease,box-shadow .2s ease,background .2s ease,color .2s ease;}
+  .n8life-action::after{content:"↗";margin-left:14px;font-size:15px;transition:transform .2s ease;}
+  .n8life-action:hover,.n8life-action:focus-visible{transform:translateY(-2px);color:var(--accent);background:transparent;box-shadow:0 10px 30px rgba(198,244,106,.12);}
+  .n8life-action:hover::after,.n8life-action:focus-visible::after{transform:translate(3px,-3px);}
+  @media (max-width:600px){.n8life-actions{align-items:flex-start;flex-direction:column;}.n8life-article{padding:52px 22px 28px;}.n8life-article-intro{margin-bottom:24px;}.n8life-feature{padding-block:20px;}}
+  @media (prefers-reduced-motion:reduce){.n8life-action,.n8life-action::after,.n8life-dialog::backdrop{transition:none;backdrop-filter:none;}}
   .btn{
     display:inline-block;border:1px solid var(--fg);padding:14px 30px;
     font-size:11px;letter-spacing:2px;text-transform:uppercase;
@@ -568,13 +679,306 @@
     .event-placeholders{grid-template-columns:1fr 1fr;}
   }
   @media (max-width:600px){
-    .intro-logo{width:min(190px,52vw);}
-    .intro-logo path{animation-duration:.72s;}
-    .intro-logo path:nth-child(2){animation-delay:.18s;}
-    .intro-logo path:nth-child(3){animation-delay:.34s;}
-    .intro-logo path:nth-child(4){animation-delay:.5s;}
-    .intro-flare{top:calc(50% + 46px);width:min(220px,60vw);animation-duration:.45s;animation-delay:1.05s;}
+    .intro-logo{width:min(360px,78vw);max-height:42vh;}
+    .intro-flare{top:calc(50% + 120px);width:min(220px,60vw);animation-duration:.45s;animation-delay:1.05s;}
     .intro-skip{right:18px;bottom:20px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .intro-logo{animation:none;}
+    .intro-flare{animation:none;}
+    .intro-video{transition:none;}
+  }
+  :root{--accent:#c6f46a;--ink:#10120c;}
+  html{scroll-behavior:smooth;scroll-padding-top:92px;}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
+  section[id]{scroll-margin-top:92px;}
+  .wrap{max-width:1200px;}
+  .footer-logo{letter-spacing:3px;}
+  .footer-logo::after{
+    content:"AGENCY";display:block;margin-top:3px;color:var(--dim);
+    font-size:8px;font-weight:500;letter-spacing:2.4px;
+  }
+  .hero{
+    min-height:min(860px,calc(100svh - 76px));
+    background:radial-gradient(ellipse at 87% 47%,rgba(198,244,106,.09),transparent 42%);
+  }
+  .hero::before{
+    content:"";position:absolute;z-index:0;right:-10%;top:14%;
+    width:min(46vw,560px);aspect-ratio:1;border:1px solid rgba(198,244,106,.2);
+    border-radius:50%;pointer-events:none;
+    box-shadow:0 0 0 42px rgba(198,244,106,.025),0 0 0 86px rgba(198,244,106,.018);
+    transform:translate3d(0,var(--hero-parallax-y,0px),0);
+    transition:transform .2s ease-out;
+  }
+  .hero::after{
+    content:"";position:absolute;z-index:0;inset:0;pointer-events:none;opacity:0;
+    background:radial-gradient(460px circle at var(--hero-glow-x,50%) var(--hero-glow-y,50%),rgba(198,244,106,.075),transparent 72%);
+    transition:opacity .35s ease;
+  }
+  .hero.is-pointer-active::after{opacity:1;}
+  .hero>*{position:relative;z-index:1;}
+  .hero .eyebrow{display:flex;align-items:center;gap:12px;color:var(--accent);}
+  .hero .eyebrow::before{content:"";width:24px;height:1px;background:var(--accent);}
+  .hero h1{max-width:900px;font-size:clamp(42px,8.4vw,104px);letter-spacing:-.065em;line-height:.98;}
+  .hero p.sub{max-width:590px;color:var(--off);}
+  .btn-primary{
+    color:var(--ink);background:var(--accent);border-color:var(--accent);
+  }
+  .btn-primary:hover,.btn-primary:focus-visible{color:var(--accent);background:transparent;}
+  .btn-secondary:hover,.btn-secondary:focus-visible{
+    border-color:var(--accent);color:color-mix(in srgb,var(--accent) 45%,var(--fg));
+  }
+  .kicker{color:color-mix(in srgb,var(--accent) 45%,var(--fg));}
+  h2{letter-spacing:-.045em;line-height:1.08;}
+  .about-grid{grid-template-columns:minmax(0,1.15fr) minmax(260px,.85fr);gap:clamp(40px,8vw,120px);align-items:center;}
+  .about-note{
+    position:relative;padding:clamp(28px,5vw,56px);
+    border:1px solid var(--line);background:linear-gradient(145deg,rgba(255,255,255,.035),transparent 70%);
+  }
+  .about-note .note-label{
+    color:color-mix(in srgb,var(--accent) 45%,var(--fg));
+    font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  }
+  .about-note p{margin:24px 0 0;font-size:clamp(24px,3.3vw,38px);font-weight:600;letter-spacing:-.04em;line-height:1.2;}
+  .about-note span{color:color-mix(in srgb,var(--accent) 45%,var(--fg));}
+  .service-row{grid-template-columns:64px minmax(200px,.85fr) minmax(0,1.15fr);gap:28px;}
+  .service-row .idx,.process-step .idx,.audience-card .idx{
+    color:color-mix(in srgb,var(--accent) 45%,var(--fg));
+  }
+  .service-row h3{letter-spacing:-.035em;}
+  .service-row{
+    position:relative;
+    transition:transform .28s cubic-bezier(.16,1,.3,1),background-color .28s ease,box-shadow .28s ease;
+  }
+  .service-row:hover,.service-row:focus-within{
+    z-index:1;transform:translateY(-2px) scale(1.005);
+    background:rgba(198,244,106,.018);
+    box-shadow:0 12px 36px rgba(198,244,106,.035);
+  }
+  .audience-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
+  .audience-card{
+    display:flex;min-height:240px;flex-direction:column;align-items:flex-start;
+    padding:28px;border:1px solid var(--line);background:var(--panel);
+    transition:border-color .2s ease,transform .2s ease;
+  }
+  .audience-card:hover{border-color:var(--accent);transform:translateY(-3px);}
+  .audience-card .idx{font-size:11px;letter-spacing:1px;}
+  .audience-card h3{margin:32px 0 12px;font-size:21px;letter-spacing:-.03em;}
+  .audience-card p{margin:0 0 24px;color:var(--dim);font-size:14px;line-height:1.65;}
+  .audience-card .audience-link{
+    margin-top:auto;color:color-mix(in srgb,var(--accent) 45%,var(--fg));font-size:10px;font-weight:600;
+    letter-spacing:1.2px;text-transform:uppercase;
+  }
+  .audience-link::after{content:"  ↗";}
+  .artists-section{
+    color:#171811;background:#f0f0e9;border-bottom-color:#d9dacf;
+  }
+  .artists-section .kicker{color:#556d2d;}
+  .artists-section .lead{max-width:660px;color:#4e5047;}
+  .artists-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;}
+  .artist-card{
+    overflow:hidden;border-color:#dedfd5;background:#fafaf6;
+    transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease;
+  }
+  .artist-card:hover,.artist-card:focus-within{transform:translateY(-4px) scale(1.01);border-color:#b6cd88;box-shadow:0 18px 42px rgba(25,31,13,.14),0 0 24px rgba(148,169,103,.08);}
+  .artist-card-portrait{aspect-ratio:4/4.7;background:#dfe0d7;}
+  .artist-card-portrait img{aspect-ratio:auto;object-position:center 35%;}
+  .artist-card-content{gap:12px;padding:22px;}
+  .artist-card-title{font-size:clamp(23px,2vw,30px);letter-spacing:-.04em;}
+  .artist-card-style{color:#5d614f;letter-spacing:1.5px;}
+  .artist-card-booking{
+    display:inline-flex;align-items:center;justify-content:center;min-height:44px;
+    padding:0 14px;border:1px solid #26291f;color:#26291f;background:transparent;
+    font-size:10px;font-weight:600;letter-spacing:1.1px;text-transform:uppercase;
+  }
+  .artist-card-booking:hover,.artist-card-booking:focus-visible{color:#fff;background:#26291f;}
+  .n8life-box{position:relative;overflow:hidden;min-height:300px;justify-content:center;background:var(--panel);}
+  html.reveal-ready .reveal.n8life-wow{transform:translateY(16px) scale(.96);}
+  html.reveal-ready .reveal.n8life-wow.in-view{transform:translateY(0) scale(1);}
+  html.reveal-ready .reveal.n8life-wow{transition-duration:.8s;}
+  .n8life-box .n8-title{letter-spacing:-.045em;}
+  .beta-badge{
+    display:inline-flex;align-items:center;gap:9px;padding:9px 12px;
+    border:1px solid rgba(198,244,106,.4);color:var(--accent);
+    font-size:10px;letter-spacing:1.6px;text-transform:uppercase;
+  }
+  .beta-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent);}
+  .roster-cta{border-bottom:1px solid var(--line);}
+  .contact-item .v{font-size:clamp(18px,2vw,23px);overflow-wrap:anywhere;}
+  .footer-description{max-width:300px;}
+  .footer-connect a,.footer-links a{min-height:24px;}
+  @media (max-width:860px){
+    .artists-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .audience-grid{grid-template-columns:1fr 1fr;}
+    .service-row{grid-template-columns:48px minmax(160px,.9fr) minmax(0,1.1fr);}
+  }
+  @media (max-width:720px){
+    .hero{min-height:auto;padding:100px 0 76px;}
+    .hero::before{right:-35%;top:12%;width:72vw;opacity:.65;}
+    .hero h1{font-size:clamp(42px,12vw,72px);}
+    .about-grid{grid-template-columns:1fr;}
+    .service-row{grid-template-columns:36px 1fr;gap:10px 16px;}
+    .service-row p{grid-column:2;}
+    .audience-grid{grid-template-columns:1fr;}
+    .audience-card{min-height:0;}
+    .audience-card h3{margin-top:22px;}
+    .artists-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+    .artist-card-content{padding:16px;}
+    .artist-card-actions .artist-card-booking{width:100%;padding:0 8px;font-size:9px;}
+    .roster-cta{padding-top:28px;padding-bottom:28px;}
+    .n8life-box{min-height:260px;}
+  }
+  @media (max-width:480px){
+    .wrap{padding-left:20px;padding-right:20px;}
+    .artists-grid{grid-template-columns:1fr;}
+    .artist-card-portrait{aspect-ratio:4/3.7;}
+    .artist-card-content{padding:20px;}
+    .hero .eyebrow{font-size:9px;letter-spacing:2.6px;}
+    .hero-actions a{width:100%;}
+    .audience-card{padding:24px;}
+    .n8life-box{padding:30px 22px;}
+  }
+
+  section:not(.hero){padding-block:clamp(64px,7.5vw,92px);}
+  section:not(.hero) h2{margin-bottom:clamp(26px,3.4vw,38px);line-height:1.17;}
+  .kicker{margin-bottom:17px;line-height:1.6;}
+  .lead{line-height:1.82;}
+  .hero{min-height:min(810px,calc(100svh - 76px));padding-block:36px;overflow-x:clip;}
+  .hero-turn{
+    position:relative;z-index:1;display:grid;width:100%;min-height:680px;
+  }
+  .hero-face{
+    position:relative;grid-area:1/1;display:flex;min-width:0;min-height:680px;
+    opacity:1;visibility:visible;transition:opacity .28s ease,visibility 0s;
+  }
+  .hero-turn[data-mode="public"] .hero-face-audience,
+  .hero-turn[data-mode="venue"] .hero-face-public,
+  .hero-turn[data-mode="artist"] .hero-face-public{
+    opacity:0;visibility:hidden;pointer-events:none;transition:opacity .2s ease,visibility 0s linear .2s;
+  }
+  .hero-turn[data-mode="public"] .hero-face-audience,
+  .hero-turn[data-mode="venue"] .hero-face-public,
+  .hero-turn[data-mode="artist"] .hero-face-public{position:absolute;inset:0;}
+  .hero-turn[data-mode="venue"] .hero-face-audience,
+  .hero-turn[data-mode="artist"] .hero-face-audience{position:relative;}
+  .hero-public-panel{
+    display:flex;width:100%;flex-direction:column;justify-content:center;align-items:flex-start;
+    padding-block:56px;
+  }
+  .hero-scene{display:grid;width:100%;min-width:0;min-height:680px;}
+  .hero-panel{
+    grid-area:1/1;display:flex;min-width:0;flex-direction:column;justify-content:center;
+    padding-block:56px;
+    opacity:0;visibility:hidden;pointer-events:none;
+    transform:translateY(12px);
+    transition:transform .3s ease,opacity .24s ease,visibility 0s linear .3s;
+  }
+  .hero-scene[data-page="venue"] [data-page-view="venue"],
+  .hero-scene[data-page="artist"] [data-page-view="artist"]{
+    z-index:2;opacity:1;visibility:visible;pointer-events:auto;transform:none;
+    transition-delay:0s;
+  }
+  .hero-public-panel h1{max-width:950px;}
+  .hero .eyebrow{margin-bottom:22px;line-height:1.7;}
+  .hero h1{
+    max-width:1000px;margin:0 0 24px;
+    font-size:clamp(46px,7vw,88px);line-height:1.08;letter-spacing:-.055em;
+  }
+  .hero p.sub{max-width:760px;margin:0;font-size:clamp(16px,1.8vw,19px);line-height:1.78;}
+  .hero-back:focus-visible{
+    outline:2px solid var(--accent);outline-offset:4px;
+  }
+  .hero-return{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:34px;}
+  .hero-return>span{color:var(--dim);font-size:9px;letter-spacing:1.5px;text-align:right;}
+  .hero-back{
+    min-height:40px;padding:6px 0;border:0;color:var(--off);background:transparent;
+    font:inherit;font-size:11px;letter-spacing:.6px;cursor:pointer;
+  }
+  .hero-back:hover{color:var(--accent);}
+  .hero-proofline{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px;}
+  .hero-proofline span{
+    padding:10px 13px;border:1px solid rgba(198,244,106,.26);
+    color:color-mix(in srgb,var(--accent) 56%,white);font-size:10px;letter-spacing:.6px;
+  }
+  .hero-audience-page .hero-actions{margin-top:28px;}
+  .venue-offer{
+    position:relative;isolation:isolate;overflow:hidden;
+    border-block:1px solid rgba(198,244,106,.16);
+    background:radial-gradient(ellipse at 95% 20%,rgba(198,244,106,.13),transparent 36%),
+      linear-gradient(125deg,rgba(198,244,106,.055),transparent 68%);
+  }
+  html[data-audience="artist"] #venue-offer,
+  html[data-audience="artist"] #how-it-works,
+  html[data-audience="artist"] .footer-links a[href="#how-it-works"]{display:none;}
+  .venue-offer::after{
+    content:"";position:absolute;z-index:-1;right:-135px;bottom:-230px;width:480px;
+    aspect-ratio:1;border:1px solid rgba(198,244,106,.12);border-radius:50%;
+    box-shadow:0 0 0 45px rgba(198,244,106,.018),0 0 0 90px rgba(198,244,106,.015);
+    pointer-events:none;
+  }
+  .venue-offer h2{max-width:850px;}
+  .venue-offer-layout{
+    display:grid;grid-template-columns:minmax(0,1.05fr) minmax(270px,.95fr);
+    gap:clamp(32px,7vw,100px);align-items:center;
+  }
+  .venue-offer-layout>.lead{max-width:560px;margin:0;}
+  .venue-offer-list{display:grid;gap:0;margin:0;padding:0;border-top:1px solid var(--line);list-style:none;}
+  .venue-offer-list li{
+    display:flex;align-items:baseline;gap:18px;padding:15px 0;
+    border-bottom:1px solid var(--line);font-size:14px;line-height:1.55;
+  }
+  .venue-offer-list li span{color:color-mix(in srgb,var(--accent) 56%,white);font-size:10px;}
+  .venue-offer>.btn-primary{margin-top:30px;}
+  @media (max-width:900px){
+    .hero-turn,.hero-face,.hero-scene{min-height:720px;}
+    .venue-offer-layout{grid-template-columns:1fr;gap:30px;}
+  }
+  @media (max-width:720px){
+    section:not(.hero){padding-block:52px;}
+    section:not(.hero) h2{margin-bottom:24px;line-height:1.19;}
+    .hero{min-height:auto;padding-block:20px 32px;}
+    .hero-turn,.hero-face,.hero-scene{min-height:0;}
+    .hero-panel{padding-block:32px;}
+    .hero-public-panel{justify-content:flex-start;padding-block:32px;}
+    .hero .eyebrow{margin-bottom:17px;letter-spacing:2px;}
+    .hero h1{margin-bottom:17px;font-size:clamp(39px,9vw,64px);line-height:1.1;letter-spacing:-.045em;}
+    .hero-return{margin-bottom:24px;}
+    .hero-proofline{gap:8px;margin-top:20px;}
+    .hero-proofline span{font-size:9px;}
+  }
+  @media (max-width:520px){
+    .hero-return{align-items:flex-start;flex-direction:column;gap:2px;}
+    .hero-return>span{text-align:left;}
+    .hero-proofline span{padding:8px 9px;}
+    .venue-offer::after{right:-250px;}
+  }
+  @media (max-width:520px) and (max-height:700px){
+    .hero{padding-block:14px 22px;}
+    .hero-panel{padding-block:20px;}
+    .hero-public-panel{padding-block:20px;}
+    .hero .eyebrow{margin-bottom:12px;}
+    .hero h1{font-size:clamp(36px,8vw,48px);margin-bottom:12px;}
+    .hero p.sub{font-size:15px;line-height:1.62;}
+  }
+  @media (max-width:480px){
+    section:not(.hero){padding-block:44px;}
+    section:not(.hero) h2{margin-bottom:21px;}
+  }
+  @media (max-height:720px) and (min-width:721px){
+    .hero{min-height:0;padding-block:32px;}
+    .hero-turn,.hero-face,.hero-scene{min-height:620px;}
+    .hero-panel{padding-block:30px;}
+    .hero-public-panel{padding-block:30px;}
+    .hero .eyebrow{margin-bottom:16px;}
+    .hero h1{font-size:clamp(48px,6vw,72px);margin-bottom:16px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .grain-overlay{animation:none;}
+    .hero-face,.hero-panel,.audience-switch button,.hero::before,.hero::after,.service-row,.artist-card{transition:none;}
+    .hero-panel{transform:none;}
+    html.reveal-ready .reveal.n8life-wow{transition:none;}
+    .service-row:hover,.service-row:focus-within,.artist-card:hover,.artist-card:focus-within{transform:none;box-shadow:none;}
+    html.reveal-ready .reveal.n8life-wow,html.reveal-ready .reveal.n8life-wow.in-view{transform:none;}
   }
 </style>
 </head>
@@ -582,217 +986,280 @@
 
 <div class="intro-overlay" id="introOverlay" role="status" aria-label="Introduction 3H33 Agency" hidden>
   <span class="intro-status">3H33 Agency</span>
-  <svg class="intro-logo" id="introLogo" viewBox="0 0 320 96" aria-hidden="true" focusable="false">
-    <path pathLength="1" d="M18 18H62V43H38M62 43V69H18"/>
-    <path pathLength="1" d="M92 18V69M140 18V69M92 43H140"/>
-    <path pathLength="1" d="M170 18H214V43H190M214 43V69H170"/>
-    <path pathLength="1" d="M244 18H288V43H264M288 43V69H244"/>
-  </svg>
+  <video class="intro-video" id="introVideo" muted playsinline preload="none" poster="assets/brand/3h33-intro-poster.jpg" aria-hidden="true">
+    <source src="assets/brand/3h33-intro.mp4" type="video/mp4">
+  </video>
+  <img class="intro-logo" id="introLogo" src="assets/brand/3h33-logo.png" alt="" aria-hidden="true" width="2000" height="2000">
   <span class="intro-flare" aria-hidden="true"></span>
   <button class="intro-skip" id="introSkip" type="button" hidden>Passer l’introduction</button>
 </div>
+<div class="grain-overlay" aria-hidden="true"></div>
+<span class="cursor-orb" id="cursorOrb" aria-hidden="true"></span>
 <a class="skip-link" href="#main-content">Aller au contenu</a>
 <header id="top">
   <nav class="wrap" aria-label="Navigation principale">
-    <a class="logo" href="#top" aria-label="3H33 Agency, accueil">3H33</a>
-    <button class="navtoggle" id="navToggle" type="button" aria-label="Ouvrir le menu" aria-controls="navLinks" aria-expanded="false">☰</button>
+    <a class="logo" href="#top" aria-label="3H33 Agency, accueil"><img src="assets/brand/3h33-logo-mark.png" alt="" width="1499" height="804"></a>
+    <button class="navtoggle" id="navToggle" type="button" aria-label="Ouvrir le menu" aria-controls="navLinks" aria-expanded="false">
+      <span class="navtoggle-icon" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="navtoggle-label">Menu</span>
+    </button>
     <div class="navlinks" id="navLinks">
-      <a href="#about">Agence</a>
-      <a href="#how-it-works">Programmation</a>
       <a href="#roster">Artistes</a>
-      <a href="#references">Références</a>
+      <a href="#about">Agence</a>
+      <a href="#services">Expertises</a>
+      <a href="#audiences">Vos projets</a>
       <a href="#contact">Contact</a>
+      <a href="#n8life">N8LIFE</a>
     </div>
+    <div class="audience-switch" role="group" aria-label="Votre espace : artiste ou établissement">
+      <button type="button" data-audience-choice="venue" aria-pressed="false" aria-controls="heroEntrance">Établissement</button>
+      <button type="button" data-audience-choice="artist" aria-pressed="true" aria-controls="heroEntrance">Artiste / DJ</button>
+    </div>
+    <span class="nav-locale" lang="fr" aria-label="Langue : français">FR</span>
   </nav>
 </header>
 
-<main id="main-content">
-<section class="hero wrap">
-  <div class="eyebrow hero-anim" style="--d:0">3H33 Agency</div>
-  <h1 class="hero-anim" style="--d:100">Management &amp; booking DJ<br/>à Angers.<br/>L'agence qui fait vivre<br/>la nuit électronique.</h1>
-  <p class="sub hero-anim" style="--d:200">3H33 est une agence de management et booking artistique basée à Angers, spécialisée en musique électronique. Nous accompagnons des DJs et artistes, conseillons bars et clubs sur leur programmation, et organisons des événements nightlife dans toute la région.</p>
-  <div class="hero-actions hero-anim" style="--d:300">
-    <a class="btn-primary" href="#contact" data-contact-type="Événement">Demander un booking</a>
-    <a class="btn-secondary" href="#contact" data-contact-type="Artiste">Rejoindre le roster</a>
+<main id="main-content" tabindex="-1">
+<section class="hero wrap" id="heroEntrance" aria-label="3H33 Agency">
+  <div class="hero-turn" id="heroTurn" data-mode="artist">
+    <div class="hero-face hero-face-public" data-mode-view="public" aria-hidden="true" inert>
+      <div class="hero-public-panel">
+        <div class="eyebrow hero-anim" style="--d:0">Management · Booking · Consulting</div>
+        <h1 class="hero-anim" style="--d:100">Management &amp; booking.<br>Création d’événements sur mesure.</h1>
+        <p class="sub hero-anim" style="--d:190">Développement de carrière et booking pour les DJs. Audit, consulting et création d’événements sur mesure pour les bars, clubs et établissements.</p>
+        <div class="hero-actions hero-anim" style="--d:280">
+          <a class="btn-primary" href="#venue-offer" data-contact-type="Club / lieu">Faire bouger mon établissement</a>
+          <a class="btn-secondary" href="#services">Découvrir l’agence</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-face hero-face-audience" data-mode-view="audience" aria-hidden="false">
+      <div class="hero-scene" id="heroScene" data-page="artist">
+        <div class="hero-panel hero-audience-page" data-page-view="venue" aria-hidden="true" inert>
+          <span class="hero-return"><button class="hero-back" type="button" data-audience-back>← Retour à l’accueil</button><span>ÉTABLISSEMENTS · 01 / 02</span></span>
+          <div class="eyebrow">Conseil · Programmation · Événements sur mesure</div>
+          <h1 tabindex="-1">Votre lieu mérite plus que des soirées qui se ressemblent.</h1>
+          <p class="sub">Quand l’activité ralentit, 3H33 imagine avec vous des événements sur mesure pour redonner du rythme à votre établissement, créer de nouvelles raisons de venir et faire revenir vos publics.</p>
+          <div class="hero-proofline" aria-label="Accompagnement des établissements">
+            <span>Diagnostic &amp; conseil</span>
+            <span>Concepts sur mesure</span>
+            <span>Programmation &amp; production</span>
+          </div>
+          <div class="hero-actions">
+            <a class="btn-primary" href="#venue-offer" data-contact-type="Club / lieu">Faire le point sur mon établissement</a>
+            <a class="btn-secondary" href="#contact" data-contact-type="Événement">Imaginer un événement</a>
+          </div>
+        </div>
+
+        <div class="hero-panel hero-audience-page" data-page-view="artist" aria-hidden="false">
+          <span class="hero-return"><button class="hero-back" type="button" data-audience-back>← Retour à l’accueil</button><span>ARTISTES · 02 / 02</span></span>
+          <div class="eyebrow">Management artistique · Booking</div>
+          <h1 tabindex="-1">Construire une trajectoire. Pas juste enchaîner les dates.</h1>
+          <p class="sub">3H33 accompagne les DJs et artistes dans la durée : stratégie, image, développement de carrière et opportunités choisies. Des univers électroniques, afro, urbains, généralistes et au-delà.</p>
+          <div class="hero-proofline" aria-label="Accompagnement des artistes">
+            <span>Vision long terme</span>
+            <span>Identité artistique</span>
+            <span>Booking cohérent</span>
+          </div>
+          <div class="hero-actions">
+            <a class="btn-primary" href="#contact" data-contact-type="Artiste">Postuler pour rejoindre le catalogue 3H33</a>
+            <a class="btn-secondary" href="#roster">Découvrir les artistes</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+  <span class="intro-status" id="audienceStatus" role="status" aria-live="polite"></span>
 </section>
 
 <section id="about" class="wrap">
-  <div class="kicker">À propos</div>
-  <h2 class="reveal">Un accompagnement pensé pour la scène locale.</h2>
+  <div class="kicker">Notre approche</div>
+  <h2 class="reveal">Faire grandir un projet, pas simplement remplir un agenda.</h2>
   <div class="about-grid">
     <div>
-      <p class="lead reveal" style="--d:80">Basée à Angers, 3H33 est une agence de management et booking artistique spécialisée dans l'accompagnement de DJs et artistes de musique électronique. Notre approche : construire des carrières sur la durée plutôt que gérer des dates au coup par coup — stratégie artistique, développement d'image, booking cohérent.</p>
-      <p class="lead reveal" style="--d:160">Nous travaillons également avec les bars et clubs de la région qui cherchent à structurer leur programmation musicale et à fidéliser leur public grâce à une sélection d'artistes pensée comme un vrai parti pris.</p>
-      <p class="lead reveal" style="--d:240">3H33 organise aussi ses propres événements nightlife à Angers et dans les environs. <strong>N8LIFE</strong>, le réseau social de la nuit, est actuellement en bêta.</p>
+      <p class="lead reveal" style="--d:80">Basée à Angers, 3H33 est une agence indépendante qui fait se rencontrer artistes et lieux de vie. Nous accompagnons des esthétiques et des projets musicaux variés : techno, afro, urbain, généraliste, électronique et au-delà.</p>
+      <p class="lead reveal" style="--d:160">Côté artistes, notre rôle est de clarifier une stratégie, construire une image juste et accompagner les prochaines étapes d’une carrière. Le management ne se résume pas aux dates : il donne une direction.</p>
+      <p class="lead reveal" style="--d:240">Côté établissements, nous faisons du conseil pour les bars, clubs et autres lieux, et concevons des événements sur mesure pour recréer de l’activité, du désir de sortie et des rendez-vous avec vos publics.</p>
     </div>
-    <div class="about-stats">
-      <div class="stat reveal" style="--d:0"><span class="num">[À REMPLIR]</span><span class="label">Événements organisés</span></div>
-      <div class="stat reveal" style="--d:100"><span class="num">[À REMPLIR]</span><span class="label">Dates bookées</span></div>
-      <div class="stat reveal" style="--d:200"><span class="num">[À REMPLIR]</span><span class="label">Artistes accompagnés</span></div>
-      <div class="stat reveal" style="--d:300"><span class="num">[À REMPLIR]</span><span class="label">Partenaires</span></div>
+    <div class="about-note reveal">
+      <span class="note-label">Le temps long, en pratique</span>
+      <p>Une vision claire.<br>Des choix cohérents.<br><span>Une carrière qui avance.</span></p>
     </div>
   </div>
 </section>
 
+<section id="venue-offer" class="venue-offer wrap" aria-labelledby="venueOfferHeading">
+  <div class="kicker">Votre établissement tourne au ralenti&nbsp;?</div>
+  <h2 class="reveal" id="venueOfferHeading">On imagine la prochaine bonne raison de pousser votre porte.</h2>
+  <div class="venue-offer-layout">
+    <p class="lead reveal">Un creux en semaine, une salle à faire vivre, une envie de renouveler vos rendez-vous&nbsp;? 3H33 vous accompagne du conseil à la production pour créer un événement qui ressemble vraiment à votre lieu.</p>
+    <ul class="venue-offer-list">
+      <li><span>01</span> Conseil &amp; diagnostic d’activité</li>
+      <li><span>02</span> Concept d’événement sur mesure</li>
+      <li><span>03</span> Programmation musicale adaptée</li>
+      <li><span>04</span> Coordination &amp; production</li>
+    </ul>
+  </div>
+  <a class="btn-primary reveal" href="#contact" data-contact-type="Club / lieu">Parler des besoins de mon lieu</a>
+</section>
+
 <section id="services" class="wrap">
-  <div class="kicker">Services</div>
-  <h2 class="reveal">Ce que fait 3H33.</h2>
+  <div class="kicker">Artistes · Lieux · Événements</div>
+  <h2 class="reveal">Une agence, plusieurs façons de faire bouger les choses.</h2>
   <div class="services-list">
     <div class="service-row reveal" style="--d:0">
       <div class="idx">01</div>
       <h3>Management artistique</h3>
-      <p>Accompagnement de carrière pour DJs et artistes électro : stratégie, image, développement long terme.</p>
+      <p>Construire une trajectoire dans la durée : stratégie, identité, image et accompagnement des prochaines étapes.</p>
     </div>
     <div class="service-row reveal" style="--d:90">
       <div class="idx">02</div>
       <h3>Booking</h3>
-      <p>Placement d'artistes sur des dates cohérentes avec leur identité, à Angers et au-delà.</p>
+      <p>Des artistes proposés pour les bonnes dates, à Angers et au-delà, en accord avec leur univers et celui du lieu.</p>
     </div>
     <div class="service-row reveal" style="--d:180">
       <div class="idx">03</div>
       <h3>Conseil en programmation</h3>
-      <p>Accompagnement des bars et clubs sur leur ligne artistique et leur sélection de DJs.</p>
+      <p>Un regard extérieur pour les bars et clubs : ligne musicale, choix des artistes et programmation adaptée au lieu.</p>
     </div>
     <div class="service-row reveal" style="--d:270">
       <div class="idx">04</div>
-      <h3>Organisation d'événements</h3>
-      <p>Conception et production d'événements nightlife, de A à Z.</p>
+      <h3>Conception &amp; production d’événements</h3>
+      <p>Imaginer le format, rassembler les bonnes énergies et produire des soirées qui ont une vraie intention.</p>
     </div>
   </div>
   <div class="section-action reveal">
-    <a class="btn-primary" href="#contact" data-contact-type="Club / lieu">Parler programmation &amp; booking</a>
+    <a class="btn-primary" href="#contact" data-contact-type="Artiste">Parler de votre projet</a>
+  </div>
+</section>
+
+<section id="audiences" class="wrap">
+  <div class="kicker">À chacun son point de départ</div>
+  <h2 class="reveal">La bonne conversation commence ici.</h2>
+  <div class="audience-grid">
+    <article class="audience-card reveal" style="--d:0">
+      <span class="idx">01 / ARTISTES</span>
+      <h3>Vous pensez à la suite ?</h3>
+      <p>Parlons de votre univers, de vos ambitions et de l’accompagnement qui pourrait vous faire avancer.</p>
+      <a class="audience-link" href="#contact" data-contact-type="Artiste">Échanger sur mon projet</a>
+    </article>
+    <article class="audience-card reveal" style="--d:80">
+      <span class="idx">02 / LIEUX</span>
+      <h3>Vous préparez une programmation ?</h3>
+      <p>Partagez votre lieu, votre public et votre intention. Nous chercherons les artistes qui vous correspondent.</p>
+      <a class="audience-link" href="#contact" data-contact-type="Club / lieu">Parler de mon lieu</a>
+    </article>
+    <article class="audience-card reveal" style="--d:160">
+      <span class="idx">03 / PARTENAIRES</span>
+      <h3>Vous avez envie de créer ?</h3>
+      <p>Vous portez une idée de soirée ou souhaitez contribuer à un événement ? Construisons le projet ensemble.</p>
+      <a class="audience-link" href="#contact" data-contact-type="Partenaire">Imaginer un événement</a>
+    </article>
   </div>
 </section>
 
 <section id="how-it-works" class="wrap">
-  <div class="kicker">Bars &amp; clubs</div>
-  <h2 class="reveal">Comment ça marche.</h2>
+  <div class="kicker">Consulting établissements</div>
+  <h2 class="reveal">De la période creuse à un rendez-vous qui compte.</h2>
   <div class="process-list">
     <article class="process-step reveal" style="--d:0">
       <span class="idx">01</span>
-      <h3>Votre brief</h3>
-      <p>Présentez votre lieu, votre date et l’ambiance recherchée.</p>
+      <h3>On vous écoute</h3>
+      <p>Parlons de votre établissement, de son rythme, de vos publics et de vos besoins concrets.</p>
     </article>
     <article class="process-step reveal" style="--d:80">
       <span class="idx">02</span>
-      <h3>La proposition</h3>
-      <p>Échangeons sur la programmation et les artistes adaptés à votre projet.</p>
+      <h3>On imagine</h3>
+      <p>Nous imaginons un événement ou une programmation sur mesure, en phase avec l’identité du lieu.</p>
     </article>
     <article class="process-step reveal" style="--d:160">
       <span class="idx">03</span>
-      <h3>Le devis</h3>
-      <p>Recevez une proposition détaillée, avec tarifs sur devis.</p>
+      <h3>On construit</h3>
+      <p>Format, programmation et accompagnement sont pensés ensemble : un projet, pas une formule standard.</p>
     </article>
     <article class="process-step reveal" style="--d:240">
       <span class="idx">04</span>
-      <h3>La validation</h3>
-      <p>Confirmez les modalités et préparez la date avec 3H33.</p>
+      <h3>On fait vivre</h3>
+      <p>3H33 coordonne les éléments du projet pour donner vie à votre événement à la bonne échelle.</p>
     </article>
   </div>
   <div class="section-action reveal">
-    <a class="btn-primary" href="#contact" data-contact-type="Club / lieu">Demander un devis</a>
+    <a class="btn-primary" href="#contact" data-contact-type="Club / lieu">Échanger sur mon établissement</a>
   </div>
 </section>
 
 <section id="roster" class="artists-section wrap" aria-labelledby="artistsHeading">
-  <div class="kicker">Roster</div>
-  <h2 class="reveal" id="artistsHeading">Les artistes.</h2>
-  <p class="lead">Les noms, portraits et styles ci-dessous reprennent les informations déjà présentes dans le roster 3H33. Les informations non disponibles sont signalées à compléter.</p>
+  <div class="kicker">Artistes accompagné·es</div>
+  <h2 class="reveal" id="artistsHeading">Des univers singuliers, une même exigence.</h2>
+  <p class="lead">Une sélection d’artistes aux identités musicales affirmées. Pour imaginer une date ou parler d’un booking, dites-nous ce que vous préparez.</p>
   <div class="artists-grid" id="artistsGrid" role="list" aria-label="Artistes 3H33"></div>
 </section>
 
-<dialog class="artist-dialog" id="artistDialog" aria-labelledby="artistDialogTitle">
-  <div class="artist-dialog-content">
-    <button class="artist-dialog-close" id="artistDialogClose" type="button" aria-label="Fermer la fiche artiste">×</button>
-    <img class="artist-dialog-portrait" id="artistDialogPortrait" alt="" hidden>
-    <div class="kicker">Fiche artiste</div>
-    <h2 id="artistDialogTitle"></h2>
-    <p class="lead" id="artistDialogStyle"><strong>Style : </strong><span id="artistDialogStyleValue"></span></p>
-    <p class="lead" id="artistDialogBio"></p>
-    <div id="artistDialogLinksSection" role="group" aria-label="Liens de l’artiste">
-      <div class="kicker">Liens</div>
-      <div class="artist-profile-links" id="artistDialogLinks"></div>
-    </div>
-    <div id="artistDialogAvailabilitySection" role="group" aria-label="Disponibilité de l’artiste">
-      <div class="kicker">Disponibilité</div>
-      <p class="lead" id="artistDialogAvailability"></p>
-    </div>
-    <div id="artistDialogDatesSection" role="group" aria-label="Prochaines dates de l’artiste">
-      <div class="kicker">Prochaines dates</div>
-      <ul class="artist-profile-dates" id="artistDialogDates"></ul>
-    </div>
-    <a class="btn-primary artist-dialog-booking" href="#contact" data-contact-type="Événement" id="artistDialogBooking">Demander un booking</a>
-  </div>
-</dialog>
-
 <div class="roster-cta wrap">
-  <p>Vous êtes artiste, club ou organisateur ? Parlons de votre prochain projet.</p>
+  <p>Vous souhaitez programmer un artiste du roster ? Parlons de votre date.</p>
   <div class="roster-cta-actions">
-    <a class="btn-secondary" href="#contact" data-contact-type="Artiste">Rejoindre le roster</a>
     <a class="btn-primary" href="#contact" data-contact-type="Événement">Demander un booking</a>
   </div>
 </div>
 
 <section id="n8life" class="wrap">
-  <div class="kicker">Projet</div>
-  <h2>N8LIFE.</h2>
-  <div class="n8life-box reveal">
-    <div class="n8-title">Le réseau social de la nuit, en bêta.</div>
-    <p class="lead">N8LIFE, le réseau social de la nuit, est actuellement en bêta.</p>
-    <a href="https://n8life.fr" class="btn" target="_blank" rel="noopener">Rejoindre la beta</a>
-  </div>
-</section>
-
-<section id="references" class="wrap">
-  <div class="kicker">Références</div>
-  <h2 class="reveal">Les projets, lieux et retours.</h2>
-  <h3>Galerie</h3>
-  <div class="placeholder-grid" aria-label="Emplacements pour des photos de références">
-    <div class="placeholder-tile motion-reveal" style="--motion-delay:0ms">[À REMPLIR — photo d’événement validée]</div>
-    <div class="placeholder-tile motion-reveal" style="--motion-delay:80ms">[À REMPLIR — photo d’événement validée]</div>
-    <div class="placeholder-tile motion-reveal" style="--motion-delay:160ms">[À REMPLIR — photo d’événement validée]</div>
-  </div>
-  <h3 style="margin-top:48px;">Partenaires</h3>
-  <div class="placeholder-grid placeholder-logos" aria-label="Emplacements pour les logos des partenaires">
-    <div class="placeholder-tile motion-reveal">[À REMPLIR — logo partenaire autorisé]</div>
-    <div class="placeholder-tile motion-reveal">[À REMPLIR — logo partenaire autorisé]</div>
-    <div class="placeholder-tile motion-reveal">[À REMPLIR — logo partenaire autorisé]</div>
-  </div>
-  <h3 style="margin-top:48px;">Témoignages</h3>
-  <div class="testimonials">
-    <blockquote class="testimonial-placeholder motion-reveal">[À REMPLIR — témoignage validé]<cite>[À REMPLIR — nom et rôle]</cite></blockquote>
-    <blockquote class="testimonial-placeholder motion-reveal">[À REMPLIR — témoignage validé]<cite>[À REMPLIR — nom et rôle]</cite></blockquote>
-    <blockquote class="testimonial-placeholder motion-reveal">[À REMPLIR — témoignage validé]<cite>[À REMPLIR — nom et rôle]</cite></blockquote>
-  </div>
-  <p class="quote-note">Ne publier que des visuels autorisés et des témoignages approuvés par leurs auteurs.</p>
-</section>
-
-<section id="events" class="wrap">
-  <div class="kicker">Agenda</div>
-  <h2 class="reveal">Dates &amp; soirées.</h2>
-  <div class="event-placeholders">
-    <div>
-      <h3>Prochaines dates</h3>
-      <div class="event-placeholder-list">
-        <div class="event-placeholder motion-reveal" style="--motion-delay:0ms">[À REMPLIR — date, lieu et artiste confirmés]</div>
-        <div class="event-placeholder motion-reveal" style="--motion-delay:80ms">[À REMPLIR — date, lieu et artiste confirmés]</div>
-      </div>
-    </div>
-    <div>
-      <h3>Dernières soirées</h3>
-      <div class="event-placeholder-list">
-        <div class="event-placeholder motion-reveal" style="--motion-delay:0ms">[À REMPLIR — soirée passée, lieu et visuel autorisé]</div>
-        <div class="event-placeholder motion-reveal" style="--motion-delay:80ms">[À REMPLIR — soirée passée, lieu et visuel autorisé]</div>
-      </div>
+  <div class="kicker">En parallèle</div>
+  <h2>La nuit a son réseau.</h2>
+  <div class="n8life-box reveal n8life-wow">
+    <span class="beta-badge">Projet en bêta</span>
+    <div class="n8-title">N8LIFE</div>
+    <h3 class="n8life-pitch">Le réseau social dédié au monde de la nuit.</h3>
+    <p class="n8life-copy">Tous les métiers de la nuit, des profils complets et des événements à partager : la scène se retrouve sur N8LIFE.</p>
+    <div class="n8life-actions">
+      <button class="n8life-action" id="n8lifeDiscover" type="button" aria-haspopup="dialog" aria-controls="n8lifeDialog">Découvrir N8LIFE</button>
+      <p class="n8life-note">Profils gratuits · Talents · Événements &amp; billetterie</p>
     </div>
   </div>
 </section>
+
+<dialog class="n8life-dialog" id="n8lifeDialog" aria-labelledby="n8lifeArticleTitle">
+  <article class="n8life-article">
+    <div class="n8life-article-head">
+      <span class="beta-badge">Projet en bêta</span>
+      <button class="n8life-dialog-close" id="n8lifeDialogClose" type="button" aria-label="Fermer l’article N8LIFE">×</button>
+    </div>
+    <p class="n8life-article-kicker">La plateforme de la nuit</p>
+    <h2 id="n8lifeArticleTitle">La nuit a son réseau.</h2>
+    <p class="n8life-article-intro">N8LIFE rassemble les talents, les établissements et les organisateurs de la vie nocturne. Un seul espace pour valoriser ton activité, faire des rencontres professionnelles et donner vie à tes événements.</p>
+    <div class="n8life-features">
+      <section class="n8life-feature">
+        <span class="n8life-feature-index">01 / TON PROFIL</span>
+        <h3>Ton univers, en un lien</h3>
+        <p>Crée gratuitement un profil professionnel complet : expériences, médias, portfolio et EPK. Présente-toi, partage ta page, renseigne tes disponibilités et gère tes dates.</p>
+      </section>
+      <section class="n8life-feature">
+        <span class="n8life-feature-index">02 / TON RÉSEAU</span>
+        <h3>Tous les métiers de la nuit</h3>
+        <p>DJs, musiciens, barmans, photographes, hôtesses, régisseurs, danseurs, clubs et collectifs : découvre les profils, développe tes contacts et trouve les talents de tes projets.</p>
+      </section>
+      <section class="n8life-feature">
+        <span class="n8life-feature-index">03 / TES ÉVÉNEMENTS</span>
+        <h3>De l’annonce à la billetterie</h3>
+        <p>Publie ton événement avec flyer, lineup et page dédiée. Partage-le sur Instagram, propose une billetterie gratuite ou payante et contrôle les billets à l’entrée depuis l’application.</p>
+      </section>
+      <section class="n8life-feature">
+        <span class="n8life-feature-index">04 / TES RÉSERVATIONS</span>
+        <h3>Talents et réservations</h3>
+        <p>Les organisateurs peuvent découvrir des profils vérifiés et réserver des talents via la plateforme, avec un paiement sécurisé.</p>
+      </section>
+    </div>
+    <div class="n8life-article-footer">
+      <a class="n8life-action" href="https://www.n8life.fr/" target="_blank" rel="noopener noreferrer" aria-label="Créer un profil gratuitement sur N8LIFE, ouvre un nouvel onglet">Créer mon profil gratuitement</a>
+      <p>N8LIFE est actuellement en bêta.<br>Rejoins les premiers membres de l’aventure.</p>
+    </div>
+  </article>
+</dialog>
 
 <section id="contact" class="wrap">
-  <div class="kicker">Contact</div>
-  <h2 class="reveal">On parle à qui ?</h2>
-  <p class="lead reveal" style="margin-bottom:48px;--d:80">Vous êtes artiste et cherchez un management sérieux ? Vous gérez un bar ou un club et voulez structurer votre programmation ? Vous organisez un événement électro à Angers ou en région ? Décrivez-nous votre projet.</p>
+  <div class="kicker">À vous de jouer</div>
+  <h2 class="reveal">Quel projet avez-vous en tête ?</h2>
+  <p class="lead reveal" style="margin-bottom:48px;--d:80">Artiste en quête d’un accompagnement, lieu à la recherche d’une programmation ou partenaire prêt à créer une soirée : racontez-nous où vous voulez aller.</p>
   <div class="contact-grid">
     <form class="contact-form reveal" id="contactForm">
       <div class="form-field">
@@ -806,6 +1273,7 @@
           <option value="Artiste">Artiste / management</option>
           <option value="Club / lieu">Club / programmation</option>
           <option value="Événement">Booking / événement</option>
+          <option value="Partenaire">Partenariat événementiel</option>
         </select>
       </div>
       <div class="form-field form-field-full">
@@ -820,7 +1288,7 @@
         <label class="contact-honeypot" for="contactWebsite" aria-hidden="true">Site web</label>
         <input class="contact-honeypot" id="contactWebsite" name="website" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
       </div>
-      <p class="form-note">Votre demande est transmise à 3H33 par e-mail afin que l’équipe puisse vous répondre.</p>
+      <p class="form-note">Votre demande est transmise à 3H33 par e-mail. Les champs sont utilisés uniquement pour vous répondre.</p>
       <button class="btn-primary" id="contactSubmit" type="submit">Envoyer la demande</button>
       <p class="form-status" id="contactStatus" role="status" aria-live="polite"></p>
       <a class="btn-secondary" id="contactFallback" href="#" hidden>Ouvrir votre messagerie à la place</a>
@@ -849,10 +1317,9 @@
       <span class="footer-heading">Explorer</span>
       <a href="#about">L'agence</a>
       <a href="#services">Services</a>
+      <a href="#audiences">Vos projets</a>
       <a href="#how-it-works">Programmation</a>
       <a href="#roster">Artistes</a>
-      <a href="#references">Références</a>
-      <a href="#events">Dates &amp; soirées</a>
       <a href="#n8life">N8LIFE</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -860,13 +1327,12 @@
       <span class="footer-heading">Contact &amp; réseaux</span>
       <a href="mailto:contact@n8life.fr">contact@n8life.fr</a>
       <a href="https://instagram.com/3h33agency" target="_blank" rel="noopener noreferrer" aria-label="Instagram de 3H33, ouvre un nouvel onglet">Instagram — @3h33agency</a>
-      <a href="https://n8life.fr" target="_blank" rel="noopener noreferrer">N8LIFE — rejoindre la bêta</a>
+      <a href="#n8life">N8LIFE — projet en bêta</a>
     </div>
   </div>
   <div class="footer-bottom">
     <span>© <span id="year"></span> 3H33 Agency</span>
     <a href="#top">Retour en haut</a>
-    <a href="/mentions-legales.html">Mentions légales</a>
   </div>
 </footer>
 
@@ -876,6 +1342,7 @@
     var overlay = document.getElementById('introOverlay');
     var skip = document.getElementById('introSkip');
     var logo = document.getElementById('introLogo');
+    var video = document.getElementById('introVideo');
     var main = document.getElementById('main-content');
     var pending = root.classList.contains('intro-pending');
     if(!pending || !overlay || !skip || !logo || window.matchMedia('(prefers-reduced-motion: reduce)').matches){
@@ -892,27 +1359,29 @@
     var previousInert = inertTargets.map(function(element){ return element.inert; });
     var skipTimer;
     var finishTimer;
+    var fallbackTimer;
     var finished = false;
 
     inertTargets.forEach(function(element){ element.inert = true; });
     overlay.hidden = false;
+
+    function useLogoFallback(){
+      if(finished || (overlay && overlay.classList.contains('has-video'))) return;
+      overlay.classList.remove('has-video');
+      window.clearTimeout(fallbackTimer);
+      window.clearTimeout(finishTimer);
+      if(video) video.pause();
+      finishTimer = window.setTimeout(function(){ finishIntro(false); },3000);
+    }
 
     function finishIntro(restoreFocus){
       if(finished) return;
       finished = true;
       window.clearTimeout(skipTimer);
       window.clearTimeout(finishTimer);
-
-      var headerLogo = document.querySelector('header .logo');
-      if(headerLogo){
-        var from = logo.getBoundingClientRect();
-        var to = headerLogo.getBoundingClientRect();
-        var scale = Math.min(to.width / from.width, to.height / from.height);
-        logo.style.setProperty('--intro-x', (to.left + to.width / 2 - from.left - from.width / 2) + 'px');
-        logo.style.setProperty('--intro-y', (to.top + to.height / 2 - from.top - from.height / 2) + 'px');
-        logo.style.setProperty('--intro-scale', String(scale));
-      }
+      window.clearTimeout(fallbackTimer);
       overlay.classList.add('is-exiting');
+      if(video) video.pause();
       window.setTimeout(function(){
         overlay.hidden = true;
         root.classList.remove('intro-pending');
@@ -929,8 +1398,160 @@
     skip.addEventListener('click', function(){ finishIntro(true); });
     document.addEventListener('keydown', onIntroKeydown);
     skipTimer = window.setTimeout(function(){ skip.hidden = false; }, 800);
-    finishTimer = window.setTimeout(function(){ finishIntro(false); },
-      window.matchMedia('(max-width: 600px)').matches ? 2450 : 3000);
+    if(video){
+      video.addEventListener('playing',function(){
+        if(finished){
+          video.pause();
+          return;
+        }
+        overlay.classList.add('has-video');
+        window.clearTimeout(fallbackTimer);
+        window.clearTimeout(finishTimer);
+        finishTimer = window.setTimeout(function(){ finishIntro(false); },5000);
+      },{once:true});
+      video.addEventListener('ended',function(){ finishIntro(false); },{once:true});
+      video.addEventListener('error',useLogoFallback,{once:true});
+      fallbackTimer = window.setTimeout(useLogoFallback,4000);
+      var playRequest = video.play();
+      if(playRequest && typeof playRequest.catch === 'function'){
+        playRequest.catch(useLogoFallback);
+      }
+    }else{
+      finishTimer = window.setTimeout(function(){ finishIntro(false); },3000);
+    }
+  })();
+
+  (function(){
+    var scene = document.getElementById('heroScene');
+    var turn = document.getElementById('heroTurn');
+    var audienceFace = document.querySelector('[data-mode-view="audience"]');
+    var publicFace = document.querySelector('[data-mode-view="public"]');
+    var status = document.getElementById('audienceStatus');
+    if(!scene || !turn || !audienceFace || !publicFace || !status) return;
+
+    var panels = Array.prototype.slice.call(scene.querySelectorAll('[data-page-view]'));
+    var audienceButtons = Array.prototype.slice.call(document.querySelectorAll('.audience-switch [data-audience-choice]'));
+    var focusTimer;
+    var audienceNames = {
+      public:'Accueil 3H33 Agency : conseil aux établissements et accompagnement des artistes.',
+      venue:'Espace établissement. Conseil, événements sur mesure et programmation.',
+      artist:'Espace artiste. Management de carrière et booking.'
+    };
+
+    function setMode(mode){
+      var showAudience = mode === 'venue' || mode === 'artist';
+      turn.dataset.mode = mode;
+      document.documentElement.dataset.audience = mode;
+      publicFace.inert = showAudience;
+      publicFace.setAttribute('aria-hidden',String(showAudience));
+      audienceFace.inert = !showAudience;
+      audienceFace.setAttribute('aria-hidden',String(!showAudience));
+      audienceButtons.forEach(function(button){
+        button.setAttribute('aria-pressed',String(button.getAttribute('data-audience-choice') === mode));
+      });
+      status.textContent = audienceNames[mode];
+    }
+
+    function showPage(page){
+      if(page !== 'venue' && page !== 'artist') return;
+      window.clearTimeout(focusTimer);
+      scene.dataset.page = page;
+      panels.forEach(function(panel){
+        var active = panel.getAttribute('data-page-view') === page;
+        panel.inert = !active;
+        panel.setAttribute('aria-hidden',String(!active));
+      });
+      status.textContent = audienceNames[page];
+      focusTimer = window.setTimeout(function(){
+        if(audienceFace.inert) return;
+        var heading = scene.querySelector('[data-page-view="' + page + '"] h1');
+        if(heading) heading.focus();
+      },180);
+    }
+
+    audienceButtons.forEach(function(button){
+      button.addEventListener('click',function(){
+        var page = button.getAttribute('data-audience-choice');
+        showPage(page);
+        setMode(page);
+      });
+    });
+
+    scene.addEventListener('click',function(event){
+      var target = event.target.closest('[data-audience-back]');
+      if(!target || !scene.contains(target)) return;
+      setMode('public');
+    });
+
+    document.addEventListener('keydown',function(event){
+      if(event.key === 'Escape' && turn.dataset.mode !== 'public'){
+        var activeButton = audienceButtons.find(function(button){
+          return button.getAttribute('data-audience-choice') === turn.dataset.mode;
+        });
+        setMode('public');
+        if(activeButton) activeButton.focus();
+      }
+    });
+
+    setMode('artist');
+  })();
+
+  (function(){
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    var hero = document.getElementById('heroEntrance');
+    var cursor = document.getElementById('cursorOrb');
+    if(reduceMotion || !finePointer) return;
+
+    var pointerX = 0;
+    var pointerY = 0;
+    var heroX = 0;
+    var heroY = 0;
+    var frame = 0;
+    var pointerInsideHero = false;
+
+    function paintPointer(){
+      frame = 0;
+      cursor.style.setProperty('--cursor-x',pointerX + 'px');
+      cursor.style.setProperty('--cursor-y',pointerY + 'px');
+      if(hero && pointerInsideHero){
+        var bounds = hero.getBoundingClientRect();
+        var x = Math.max(0,Math.min(1,(heroX - bounds.left) / bounds.width));
+        var y = Math.max(0,Math.min(1,(heroY - bounds.top) / bounds.height));
+        hero.style.setProperty('--hero-glow-x',(x * 100) + '%');
+        hero.style.setProperty('--hero-glow-y',(y * 100) + '%');
+        hero.style.setProperty('--hero-parallax-y',((y - .5) * -10) + 'px');
+      }
+    }
+
+    document.addEventListener('pointermove',function(event){
+      if(event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+      heroX = event.clientX;
+      heroY = event.clientY;
+      cursor.classList.add('is-visible');
+      if(!frame) frame = window.requestAnimationFrame(paintPointer);
+    },{passive:true});
+
+    document.addEventListener('pointerover',function(event){
+      var target = event.target.closest('a,button,[role="button"]');
+      var formField = event.target.closest('input,textarea,select,[contenteditable="true"]');
+      cursor.classList.toggle('is-hovering',!!target && !formField);
+    },{passive:true});
+
+    document.addEventListener('pointerout',function(event){
+      if(!event.relatedTarget) cursor.classList.remove('is-visible','is-hovering');
+    },{passive:true});
+
+    if(hero){
+      hero.addEventListener('pointerenter',function(){ pointerInsideHero = true; hero.classList.add('is-pointer-active'); },{passive:true});
+      hero.addEventListener('pointerleave',function(){
+        pointerInsideHero = false;
+        hero.classList.remove('is-pointer-active');
+        hero.style.setProperty('--hero-parallax-y','0px');
+      },{passive:true});
+    }
   })();
 
   var navToggle = document.getElementById('navToggle');
@@ -942,7 +1563,8 @@
     navLinks.inert = mobileNavigation.matches && !shouldOpen;
     navToggle.setAttribute('aria-expanded', String(shouldOpen));
     navToggle.setAttribute('aria-label', shouldOpen ? 'Fermer le menu' : 'Ouvrir le menu');
-    navToggle.textContent = shouldOpen ? '×' : '☰';
+    var toggleLabel = navToggle.querySelector('.navtoggle-label');
+    if(toggleLabel) toggleLabel.textContent = shouldOpen ? 'Fermer' : 'Menu';
   }
   setNavigationOpen(false);
   navToggle.addEventListener('click', function(){
@@ -1072,71 +1694,17 @@
 
   (function(){
     var grid = document.getElementById('artistsGrid');
-    var dialog = document.getElementById('artistDialog');
-    if(!grid || !dialog) return;
+    if(!grid) return;
 
     var artists = [
-      {name:'ADR', image:'artists/adr.jpg', category:'Afro Généraliste', profile:{bio:'', links:{soundcloud:'', spotify:'', instagram:''}, availability:'', upcomingDates:[]}},
-      {name:'KAZE', image:'artists/kaze.jpg', category:'Uptempo', profile:{bio:'', links:{soundcloud:'', spotify:'', instagram:''}, availability:'', upcomingDates:[]}},
-      {name:'NØXIA', image:'artists/noxia.png', category:'Dark Techno', profile:{bio:'', links:{soundcloud:'', spotify:'', instagram:''}, availability:'', upcomingDates:[]}},
-      {name:'CARNAGE', image:'artists/carnage.jpg', category:'Hard Techno', profile:{bio:'', links:{soundcloud:'', spotify:'', instagram:''}, availability:'', upcomingDates:[]}},
-      {name:'SKRIOUT', image:'artists/skriout.jpg', category:'Généraliste', profile:{bio:'', links:{soundcloud:'', spotify:'', instagram:''}, availability:'', upcomingDates:[]}},
-      {name:"TEK'S", image:'artists/teks.png', category:'Techno', profile:{bio:'', links:{soundcloud:'', spotify:'', instagram:''}, availability:'', upcomingDates:[]}}
+      {name:'ADR', image:'artists/adr.jpg', category:'Afro · Généraliste'},
+      {name:'KAZE', image:'artists/kaze.jpg', category:'Uptempo'},
+      {name:'NØXIA', image:'artists/noxia.png', category:'Dark techno'},
+      {name:'CARNAGE', image:'artists/carnage.jpg', category:'Hard techno'},
+      {name:'SKRIOUT', image:'artists/skriout.jpg', category:'Généraliste'},
+      {name:"TEK'S", image:'artists/teks.png', category:'Techno'}
     ];
     var fragment = document.createDocumentFragment();
-    var activeTrigger = null;
-    var closeButton = document.getElementById('artistDialogClose');
-    var labels = {soundcloud:'SoundCloud',spotify:'Spotify',instagram:'Instagram'};
-
-    function addProfileLink(list, artist, key){
-      var item = document.createElement('li');
-      var url = artist.profile.links && artist.profile.links[key];
-      if(typeof url === 'string' && /^https:\/\//i.test(url.trim())){
-        var link = document.createElement('a');
-        link.href = url.trim();
-        link.target = '_blank';
-        link.rel = 'noopener noreferrer';
-        link.textContent = labels[key];
-        link.setAttribute('aria-label', labels[key] + ' de ' + artist.name + ', ouvre un nouvel onglet');
-        item.appendChild(link);
-      }else{
-        item.className = 'is-placeholder';
-        item.textContent = labels[key] + ' — [À REMPLIR]';
-      }
-      list.appendChild(item);
-    }
-
-    function openProfile(artist, trigger){
-      activeTrigger = trigger;
-      var portrait = document.getElementById('artistDialogPortrait');
-      portrait.src = artist.image;
-      portrait.alt = 'Portrait de ' + artist.name;
-      portrait.hidden = !artist.image;
-      document.getElementById('artistDialogTitle').textContent = artist.name;
-      document.getElementById('artistDialogStyleValue').textContent = artist.category || '[À REMPLIR]';
-      document.getElementById('artistDialogBio').textContent =
-        artist.profile.bio.trim() || '[À REMPLIR — bio courte validée]';
-      document.getElementById('artistDialogAvailability').textContent =
-        artist.profile.availability.trim() || '[À REMPLIR]';
-
-      var links = document.getElementById('artistDialogLinks');
-      links.textContent = '';
-      Object.keys(labels).forEach(function(key){ addProfileLink(links, artist, key); });
-
-      var dates = document.getElementById('artistDialogDates');
-      dates.textContent = '';
-      var upcomingDates = artist.profile.upcomingDates.filter(function(date){
-        return typeof date === 'string' && date.trim();
-      });
-      (upcomingDates.length ? upcomingDates : ['[À REMPLIR — dates confirmées]']).forEach(function(date){
-        var item = document.createElement('li');
-        item.textContent = date;
-        dates.appendChild(item);
-      });
-
-      dialog.showModal();
-      closeButton.focus();
-    }
 
     artists.forEach(function(artist,index){
       var card = document.createElement('article');
@@ -1165,35 +1733,17 @@
 
       var style = document.createElement('p');
       style.className = 'artist-card-style';
-      style.textContent = artist.category || '[À REMPLIR — style confirmé]';
+      style.textContent = artist.category;
       content.appendChild(style);
-
-      var bio = document.createElement('p');
-      bio.className = 'artist-card-bio';
-      bio.textContent = artist.profile.bio.trim() || '[À REMPLIR — bio courte validée]';
-      content.appendChild(bio);
-
-      var links = document.createElement('ul');
-      links.className = 'artist-card-links';
-      Object.keys(labels).forEach(function(key){ addProfileLink(links, artist, key); });
-      content.appendChild(links);
 
       var actions = document.createElement('div');
       actions.className = 'artist-card-actions';
-      var details = document.createElement('button');
-      details.className = 'artist-card-open';
-      details.type = 'button';
-      details.textContent = 'Voir la fiche';
-      details.setAttribute('aria-haspopup','dialog');
-      details.setAttribute('aria-label','Voir la fiche de ' + artist.name);
-      details.addEventListener('click',function(){ openProfile(artist,details); });
-      actions.appendChild(details);
-
       var booking = document.createElement('a');
-      booking.className = 'btn-primary';
+      booking.className = 'artist-card-booking';
       booking.href = '#contact';
       booking.setAttribute('data-contact-type','Événement');
-      booking.textContent = 'Booker cet artiste';
+      booking.setAttribute('aria-label','Demander un booking de ' + artist.name);
+      booking.textContent = 'Demander un booking';
       booking.addEventListener('click',function(){
         var typeField = document.getElementById('contactType');
         if(typeField) typeField.value = 'Événement';
@@ -1206,19 +1756,6 @@
 
     grid.appendChild(fragment);
     observeMotionReveal(grid.querySelectorAll('.motion-reveal'));
-
-    closeButton.addEventListener('click',function(){ dialog.close(); });
-    dialog.addEventListener('close',function(){
-      if(activeTrigger) activeTrigger.focus();
-      activeTrigger = null;
-    });
-    dialog.addEventListener('click',function(event){
-      if(event.target === dialog) dialog.close();
-    });
-    document.getElementById('artistDialogBooking').addEventListener('click',function(){
-      dialog.close();
-    });
-
   })();
 
   // ARTISTES — pin natif et progression entierement pilotee par le scroll.
@@ -1534,6 +2071,20 @@
       }, {passive:true});
       window.addEventListener('resize', update);
     }
+  })();
+
+  (function(){
+    var dialog = document.getElementById('n8lifeDialog');
+    var trigger = document.getElementById('n8lifeDiscover');
+    var closeButton = document.getElementById('n8lifeDialogClose');
+    if(!dialog || !trigger || !closeButton || typeof dialog.showModal !== 'function') return;
+
+    trigger.addEventListener('click',function(){ dialog.showModal(); });
+    closeButton.addEventListener('click',function(){ dialog.close(); });
+    dialog.addEventListener('click',function(event){
+      if(event.target === dialog) dialog.close();
+    });
+    dialog.addEventListener('close',function(){ trigger.focus(); });
   })();
 </script>
 </body>
